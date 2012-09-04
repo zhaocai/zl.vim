@@ -1,11 +1,11 @@
 " =============== ============================================================
 " Name           : syntax.vim
-" Synopsis       : vim syntax library
+" Synopsis       : vim script library: syntax
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Mon 03 Sep 2012 09:50:29 AM EDT
+" Last Modified  : Mon 03 Sep 2012 09:16:10 PM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -31,21 +31,21 @@ endif
 "     Desc: Highlight cursor word for source browsing (mostly).
 "           It is useful and not hard to implementent. But naïve approach can
 "           make the highlights very annoying when the cursor is put on words
-"           like "set, if, print..." because these words are everywhere.
+"           like "set, if, print,..." because these words are everywhere.
 "
 "  Feature: Ignore certain syntax group
 "
-"   Config: 1. g:zlib_hl_cword_disable_syngroup
-"           2. g:zlib_hl_cword_syngroup
+"   Config: 1. g:zlib_hl_cword_disable_hlgroup
+"           2. g:zlib_hl_cword_hlgroup
 "
 "  Example: >
-"       let g:zlib_hl_cword_syngroup = 'SpellCap'
+"       let g:zlib_hl_cword_hlgroup = 'SpellCap'
 "       nnoremap <silent> <C-h>h :<C-u>call zlib#syntax#hl_cword_toggle()<CR>
 " ============================================================================
 
-let s:zlib_hl_cword_syngroup = 'ZlibCword'
+let s:zlib_hl_cword_hlgroup = 'ZlibCword'
 call zlib#rc#set_default({
-            \ 'g:zlib_hl_cword_disable_syngroup'    : {
+            \ 'g:zlib_hl_cword_disable_hlgroup'    : {
             \     'Statement'        : 1,
             \     'SpecialStatement' : 1,
             \     'Comment'          : 1,
@@ -57,7 +57,7 @@ call zlib#rc#set_default({
             \     'StorageClass'     : 1,
             \ }
             \
-            \ , 'g:zlib_hl_cword_syngroup' : s:zlib_hl_cword_syngroup
+            \ , 'g:zlib_hl_cword_hlgroup' : s:zlib_hl_cword_hlgroup
         \ })
 
 function! zlib#syntax#hl_cword_toggle()
@@ -73,20 +73,20 @@ endfunction
 function! zlib#syntax#hl_cword()
     call <SID>zlib_hl_cword_clear()
 
-    if !has_key(g:zlib_hl_cword_disable_syngroup
+    if !has_key(g:zlib_hl_cword_disable_hlgroup
                 \ , zlib#syntax#cursor_trans_hlgroup())
         let pattern = '\V\<' . escape(expand('<cword>'), '\') . '\>'
-        if g:zlib_hl_cword_syngroup == 'ZlibCword'
+        if g:zlib_hl_cword_hlgroup == 'ZlibCword'
             exec 'hi '
-                \ . g:zlib_hl_cword_syngroup
+                \ . g:zlib_hl_cword_hlgroup
                 \ . ' GUI=reverse CTERM=reverse'
         else
             exec 'hi link '
-                \ . s:zlib_hl_cword_syngroup
+                \ . s:zlib_hl_cword_hlgroup
                 \ . ' '
-                \ . g:zlib_hl_cword_syngroup
+                \ . g:zlib_hl_cword_hlgroup
         endif
-        let b:zlib_hl_cword_match = matchadd(g:zlib_hl_cword_syngroup, pattern)
+        let b:zlib_hl_cword_match = matchadd(g:zlib_hl_cword_hlgroup, pattern)
     endif
 endfunction
 
@@ -116,6 +116,7 @@ endfunction
 
 
 
+
 " ============================================================================
 " ColorColumn:                                                            [[[1
 " ============================================================================
@@ -129,7 +130,8 @@ function! zlib#syntax#colorcolum() "                                      [[[2
     " Raise   :
     "
     " Example : >
-    "   nnoremap <Leader>cc :<C-u>call zlib#syntax#colorcolum()<CR>
+    "   nnoremap <Leader>cc
+    "   \        :<C-u>call zlib#syntax#colorcolum()<CR>
     "--------- ------------------------------------------------
 
     if empty(&colorcolumn)
@@ -145,6 +147,9 @@ function! zlib#syntax#colorcolum() "                                      [[[2
         setlocal colorcolumn=
     endif
 endfunction
+
+
+
 
 
 " ============================================================================
@@ -260,7 +265,9 @@ function! zlib#syntax#cursor_guifg() "                                    [[[2
 
     " Use the translated id for all the color & attribute lookups
     if (synIDattr(tid1, "fg") != "" )
-        let guifg = "guifg=" . synIDattr(tid1, "fg") . "(" . synIDattr(tid1, "fg#") . ")"
+        let guifg = "guifg="
+                    \ . synIDattr(tid1, "fg")
+                    \ . "(" . synIDattr(tid1, "fg#") . ")"
     endif
     return guifg
 endfunction
@@ -280,7 +287,9 @@ function! zlib#syntax#cursor_guibg() "                                    [[[2
     let tid1 = synIDtrans(id1)
 
     if (synIDattr(tid1, "bg") != "" )
-        let guibg = "guibg=" . synIDattr(tid1, "bg") . "(" . synIDattr(tid1, "bg#") . ")"
+        let guibg = "guibg="
+                    \ . synIDattr(tid1, "bg")
+                    \ . "(" . synIDattr(tid1, "bg#") . ")"
     endif
     return guibg
 endfunction

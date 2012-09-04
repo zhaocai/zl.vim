@@ -1,10 +1,10 @@
 " =============== ============================================================
 " Name           : rc.vim
-" Description    : vim library rc
+" Description    : vim script library
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Mon 03 Sep 2012 09:45:33 AM EDT
+" Last Modified  : Tue 04 Sep 2012 12:10:44 AM EDT
 " Tag            : [ vim, library ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.

@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Mon 03 Sep 2012 09:41:31 AM EDT
+" Last Modified  : Mon 03 Sep 2012 11:09:54 PM EDT
 " Tag            : [ vim, library ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -29,7 +29,7 @@ endif
 " ============================================================================
 " Environment:                                                            [[[1
 " ============================================================================
-let s:os_type = 'undefined'
+let s:os_type   = 'undefined'
 let s:is_cygwin = has('win32unix')
 
 function! zlib#sys#ostype() "                                             [[[2
@@ -52,18 +52,17 @@ function! zlib#sys#ostype() "                                             [[[2
     elseif has('mac')
         let s:os_type="Mac"
     elseif has('unix')
-            let arch = system("uname | tr -d '\n'")
-            if ( arch=="Darwin" )
-                let s:os_type="Mac"
-            elseif ( arch=="Linux" )
-                let s:os_type="Linux"
-            elseif ( arch=="FreeBSD" )
-                let s:os_type="FreeBSD"
-            elseif ( arch=="SunOS" )
-                let s:os_type="SunOS"
-            else
-                let s:os_type="Unix"
-            endif
+        let arch = system("uname | tr -d '\n'")
+        if ( arch=="Linux" )
+            let s:os_type="Linux"
+        elseif ( arch=="FreeBSD" )
+            let s:os_type="FreeBSD"
+        elseif ( arch=="SunOS" )
+            let s:os_type="SunOS"
+        elseif ( arch=="Darwin" )
+            let s:os_type="Mac"
+        else
+            let s:os_type="Unix"
         endif
     endif
     return s:os_type
