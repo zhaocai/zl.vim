@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Tue 04 Sep 2012 12:17:44 AM EDT
+" Last Modified  : Tue 04 Sep 2012 12:28:26 AM EDT
 " Tag            : [ vim, library, filetype ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -58,6 +58,7 @@ function! s:ftdetect(filename)
     try
         silent exec 'noautocmd file ' . escape(a:filename, ' ')
         silent filetype detect
+
         return &ft
     catch /^Vim\%((\a\+)\)\=:E95/
         " existing buffer

@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Tue 04 Sep 2012 12:10:44 AM EDT
+" Last Modified  : Tue 04 Sep 2012 12:43:07 AM EDT
 " Tag            : [ vim, library ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -43,7 +43,8 @@ function! zlib#rc#init() abort "                                          [[[2
 
     " Public Interface
     " ----------------
-    command! -nargs=0 ZReloadScript call zlib#rc#script_force_reload()
+    command! -nargs=0 ZreloadScript  call zlib#rc#script_force_reload()
+    command! -nargs=0 ZhlCwordToggle call zlib#syntax#hl_cword_toggle()
 
 endfunction
 
