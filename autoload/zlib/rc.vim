@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Tue 04 Sep 2012 12:43:07 AM EDT
+" Last Modified  : Sun 09 Sep 2012 11:21:58 PM EDT
 " Tag            : [ vim, library ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -172,6 +172,9 @@ function! zlib#rc#set_default(var, ...) "  ('var', val) || ( {dict} )     [[[2
     " Args    : ('var', val) || ( {dict} )
     " Return  :
     " Raise   : 'zlib: ***'
+    "
+    " Pitfall : avoid 's:' variables, which will be defined in
+    "           this rc.vim script bur your script
     "
     " Example : >
     "   call zlib#rc#set_default({

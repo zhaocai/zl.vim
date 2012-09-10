@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Mon 03 Sep 2012 09:16:10 PM EDT
+" Last Modified  : Mon 10 Sep 2012 01:42:05 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -46,15 +46,15 @@ endif
 let s:zlib_hl_cword_hlgroup = 'ZlibCword'
 call zlib#rc#set_default({
             \ 'g:zlib_hl_cword_disable_hlgroup'    : {
-            \     'Statement'        : 1,
-            \     'SpecialStatement' : 1,
-            \     'Comment'          : 1,
-            \     'Delimiter'        : 1,
-            \     'Structure'        : 1,
-            \     'Type'             : 1,
-            \     'Conditional'      : 1,
-            \     'Class'            : 1,
-            \     'StorageClass'     : 1,
+            \     'Statement'        : 1 ,
+            \     'SpecialStatement' : 1 ,
+            \     'Comment'          : 1 ,
+            \     'Delimiter'        : 1 ,
+            \     'Structure'        : 1 ,
+            \     'Type'             : 1 ,
+            \     'Conditional'      : 1 ,
+            \     'Class'            : 1 ,
+            \     'StorageClass'     : 1 ,
             \ }
             \
             \ , 'g:zlib_hl_cword_hlgroup' : s:zlib_hl_cword_hlgroup
@@ -157,41 +157,82 @@ endfunction
 " ============================================================================
 
 
-function! zlib#syntax#cursor_hlgroup() "                                  [[[2
+function! zlib#syntax#cursor_hlgroup(...) "                               [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax group name of under cursor
     "
     " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line('.') ,
+    "      'col'  : col('.')  ,
+    "   }
+    "
     " Return  : Highlight group name
     " Raise   :
     "--------- ------------------------------------------------
 
-    return synIDattr(synID(line("."), col("."), 1), "name")
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
+    return synIDattr(synID(opts['line'], opts['col'], 1), "name")
 endfunction
 
-function! zlib#syntax#cursor_trans_hlgroup() "                            [[[2
+function! zlib#syntax#cursor_trans_hlgroup(...) "                         [[[2
     "--------- ------------------------------------------------
     " Desc    : Get actual syntax group name of under cursor
     "
     " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line('.') ,
+    "      'col'  : col('.')  ,
+    "   }
     " Return  : Translated highlight group name
     " Raise   :
     "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
 
-    return synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name")
+    return synIDattr(synIDtrans(synID(opts['line'], opts['col'], 1)), "name")
 endfunction
 
-function! zlib#syntax#cursor_synid() "                                    [[[2
+function! zlib#syntax#cursor_synid(...) "                                 [[[2
     "--------- ------------------------------------------------
     " Desc    : Get detailed syntax ID under cursor
     "
     " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line('.') ,
+    "      'col'  : col('.')  ,
+    "   }
     " Return  : syntax ID
     " Raise   :
     "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
+
     let synid = ""
 
-    let id1  = synID(line("."), col("."), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)), 1)
     let tid1 = synIDtrans(id1)
 
     if synIDattr(id1, "name") != ""
@@ -213,18 +254,31 @@ function! zlib#syntax#cursor_synid() "                                    [[[2
     return synid
 endfunction
 
-function! zlib#syntax#cursor_gui() "                                      [[[2
+function! zlib#syntax#cursor_gui(...) "                                   [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax highlight style under cursor
     "
     " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line('.') ,
+    "      'col'  : col('.')  ,
+    "   }
     " Return  : gui
     " Raise   :
     "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
 
     let gui   = ""
 
-    let id1  = synID(line("."), col("."), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)), 1)
     let tid1 = synIDtrans(id1)
 
     if (synIDattr(tid1, "bold"     ))
@@ -249,18 +303,31 @@ function! zlib#syntax#cursor_gui() "                                      [[[2
     return gui
 endfunction
 
-function! zlib#syntax#cursor_guifg() "                                    [[[2
+function! zlib#syntax#cursor_guifg(...) "                                 [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax highlight guifg under cursor
     "
     " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line('.') ,
+    "      'col'  : col('.')  ,
+    "   }
     " Return  : guifg
     " Raise   :
     "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
 
     let guifg = ""
 
-    let id1  = synID(line("."), col("."), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)), 1)
     let tid1 = synIDtrans(id1)
 
     " Use the translated id for all the color & attribute lookups
@@ -272,18 +339,32 @@ function! zlib#syntax#cursor_guifg() "                                    [[[2
     return guifg
 endfunction
 
-function! zlib#syntax#cursor_guibg() "                                    [[[2
+function! zlib#syntax#cursor_guibg(...) "                                 [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax highlight guibg under cursor
     "
     " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line('.') ,
+    "      'col'  : col('.')  ,
+    "   }
+    "
     " Return  : guibg
     " Raise   :
     "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
 
     let guibg = ""
 
-    let id1  = synID(line("."), col("."), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)), 1)
     let tid1 = synIDtrans(id1)
 
     if (synIDattr(tid1, "bg") != "" )
@@ -294,33 +375,53 @@ function! zlib#syntax#cursor_guibg() "                                    [[[2
     return guibg
 endfunction
 
-function! zlib#syntax#cursor_hl() "                                       [[[2
+function! zlib#syntax#cursor_hl(...) "                                    [[[2
     "--------- ------------------------------------------------
     " Desc    : Combined info of above syntax#cursor_* funcs
     "
     " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line('.') ,
+    "      'col'  : col('.')  ,
+    "   }
     " Return  : Syntax highlight info under cursor
     " Raise   :
     "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
 
-    let info = [ zlib#syntax#cursor_synid()
-                \ , zlib#syntax#cursor_guifg()
-                \ , zlib#syntax#cursor_guibg()
-                \ , zlib#syntax#cursor_gui()
+    let info = [ zlib#syntax#cursor_synid(opts)
+                \ , zlib#syntax#cursor_guifg(opts)
+                \ , zlib#syntax#cursor_guibg(opts)
+                \ , zlib#syntax#cursor_gui(opts)
             \ ]
 
     return join(filter(info, "v:val != ''"), ' ')
 endfunction
 
-function! zlib#syntax#cursor_hl_echo() "                                  [[[2
+function! zlib#syntax#cursor_hl_echo(...) "                               [[[2
     "--------- ------------------------------------------------
     " Desc    : Echo zlib#syntax#cursor_hl()
     "
     " Example : >
     "   nnoremap <Leader>a :call zlib#syntax#cursor_hl_echo()<CR>
     "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : col('.')  ,
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
 
-    let message = zlib#syntax#cursor_hl()
+    let message = zlib#syntax#cursor_hl(opts)
     echohl MoreMsg
     if message == ""
         echohl WarningMsg
