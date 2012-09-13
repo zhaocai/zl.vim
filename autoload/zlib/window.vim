@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Tue 11 Sep 2012 04:42:57 AM EDT
+" Last Modified  : Thu 13 Sep 2012 12:09:43 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -212,7 +212,48 @@ endfunction
 " Switch:                                                                 [[[1
 " ============================================================================
 
-function! zlib#window#switch_with_largest(...)
+function! zlib#window#switch_buffer_toggle(...)
+    "--------- ------------------------------------------------
+    " Desc    : toggle buffer switch
+    "
+    " Args    :
+    "   - opts : >
+    "   {
+    "     'with'         : 'largest'              ,
+    "   }
+    "
+    " Return  :
+    " Raise   :
+    "
+    " Example : >
+    "   nnoremap <silent> <C-@>
+    "   \ :<C-u>call zlib#window#switch_buffer_toggle()<CR>
+    "--------- ------------------------------------------------
+
+    let opts = {
+                \ 'with'          : 'largest',
+            \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
+
+    let bufnr = bufnr('%')
+    if exists('b:switch_buffer')
+            \ && bufwinnr(b:switch_buffer['bufnr']) == b:switch_buffer['winnr']
+        call zlib#window#switch_buffer(bufnr, b:switch_buffer['bufnr'])
+    else
+        try
+            let fn = 'zlib#window#switch_buffer_with_'.opts['with']
+            exec 'call ' . fn . '()'
+        catch /^Vim%((a+))=:E700/
+            throw "zlib: function " . fn . 'for ' . opts['with']
+                \ . ' is not implemented!'
+        endtry
+
+    endif
+endfunction
+
+function! zlib#window#switch_buffer_with_largest(...)
     "--------- ------------------------------------------------
     " Desc    : switch buffer with the largest window
     "
@@ -231,7 +272,7 @@ function! zlib#window#switch_with_largest(...)
     "
     " Example : >
     "   nnoremap <silent> <C-@>
-    "   \ :<C-u>call zlib#window#switch_with_largest()<CR>
+    "   \ :<C-u>call zlib#window#switch_buffer_with_largest()<CR>
     "--------- ------------------------------------------------
 
 
@@ -272,10 +313,18 @@ function! zlib#window#switch_buffer(bufnr1, bufnr2)
         silent exec winnr1 'wincmd w'
         if bufnr('%') != a:bufnr2
             silent exec 'buffer' a:bufnr2
+            let b:switch_buffer = {
+                        \ 'bufnr' : a:bufnr1 ,
+                        \ 'winnr' : winnr2   ,
+                        \ }
         endif
         silent exec winnr2 'wincmd w'
         if bufnr('%') != a:bufnr1
             silent exec 'buffer' a:bufnr1
+            let b:switch_buffer = {
+                        \ 'bufnr' : a:bufnr2 ,
+                        \ 'winnr' : winnr1   ,
+                        \ }
         endif
         redraw
         return 1
