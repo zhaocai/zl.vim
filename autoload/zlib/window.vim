@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 13 Sep 2012 12:09:43 AM EDT
+" Last Modified  : Fri 14 Sep 2012 08:32:49 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -71,32 +71,6 @@ endfunction
 
 
 
-" ============================================================================
-" Close:                                                                  [[[1
-" ============================================================================
-function! s:_buf_quit_hook(cmd)
-    if exists('*Voom_Exec')
-        call Voom_DeleteOutline(a:cmd)
-        return 1
-    endif
-    return 0
-endfunction
-
-function! zlib#window#buffer_quit()
-    if ! s:_buf_quit_hook('q')
-        execute 'quit'
-    endif
-endfunction
-
-function! zlib#window#buffer_delete(cmd)
-    if ! s:_buf_quit_hook(a:cmd)
-        let current = bufnr('%')
-
-        call zlib#window#alternate_buffer()
-
-        silent! execute a:cmd . ' ' . current
-    endif
-endfunction
 
 
 " ============================================================================
@@ -144,7 +118,7 @@ function! zlib#window#toggle_split()
     if prev_name == winnr()
         split
     else
-        call zlib#window#buffer_quit()
+        call zlib#buf#quit()
     endif
 endfunction
 
