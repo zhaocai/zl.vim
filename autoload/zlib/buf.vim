@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Fri 14 Sep 2012 08:34:19 AM EDT
+" Last Modified  : Fri 14 Sep 2012 08:35:54 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -206,7 +206,7 @@ function! zlib#buf#redir(...) "                                           [[[2
         call append(line('$'),v:errmsg)
     endif
 
-    " Ctrl-M
+    " Fix Ctrl-M
     %s///ge
 
     1 delete _

@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Tue 04 Sep 2012 12:28:26 AM EDT
+" Last Modified  : Sat 15 Sep 2012 02:08:28 AM EDT
 " Tag            : [ vim, library, filetype ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -51,6 +51,7 @@ function! s:ftdetect(filename)
 
     " vim filetype detect
     if !exists('b:zlib_ftdetect_buf')
+        let b:zlib_saved_lazyredraw = &lazyredraw
         set lazyredraw
         vsplit | enew
         let b:zlib_ftdetect_buf = bufnr('%')
@@ -96,6 +97,7 @@ function! zlib#ft#detect(filename) "                                      [[[2
         if exists('b:zlib_ftdetect_buf')
             bwipeout!
             redraw
+            let &lazyredraw = b:zlib_saved_lazyredraw
         endif
 
     endtry

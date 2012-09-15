@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Fri 14 Sep 2012 08:32:49 AM EDT
+" Last Modified  : Sat 15 Sep 2012 02:09:57 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -283,7 +283,7 @@ function! zlib#window#switch_buffer(bufnr1, bufnr2)
     let winnr1 = bufwinnr(a:bufnr1)
     let winnr2 = bufwinnr(a:bufnr2)
     if winnr1 != -1 && winnr2 != -1
-        set lazyredraw
+
         silent exec winnr1 'wincmd w'
         if bufnr('%') != a:bufnr2
             silent exec 'buffer' a:bufnr2
@@ -300,7 +300,7 @@ function! zlib#window#switch_buffer(bufnr1, bufnr2)
                         \ 'winnr' : winnr1   ,
                         \ }
         endif
-        redraw
+
         return 1
     else
         return 0
