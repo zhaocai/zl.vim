@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Mon 10 Sep 2012 01:42:05 AM EDT
+" Last Modified  : Sun 16 Sep 2012 09:34:39 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -232,7 +232,7 @@ function! zlib#syntax#cursor_synid(...) "                                 [[[2
 
     let synid = ""
 
-    let id1  = synID(opts['line'], opts['col'], 1)), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)
     let tid1 = synIDtrans(id1)
 
     if synIDattr(id1, "name") != ""
@@ -278,7 +278,7 @@ function! zlib#syntax#cursor_gui(...) "                                   [[[2
 
     let gui   = ""
 
-    let id1  = synID(opts['line'], opts['col'], 1)), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)
     let tid1 = synIDtrans(id1)
 
     if (synIDattr(tid1, "bold"     ))
@@ -327,7 +327,7 @@ function! zlib#syntax#cursor_guifg(...) "                                 [[[2
 
     let guifg = ""
 
-    let id1  = synID(opts['line'], opts['col'], 1)), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)
     let tid1 = synIDtrans(id1)
 
     " Use the translated id for all the color & attribute lookups
@@ -364,7 +364,7 @@ function! zlib#syntax#cursor_guibg(...) "                                 [[[2
 
     let guibg = ""
 
-    let id1  = synID(opts['line'], opts['col'], 1)), 1)
+    let id1  = synID(opts['line'], opts['col'], 1)
     let tid1 = synIDtrans(id1)
 
     if (synIDattr(tid1, "bg") != "" )
