@@ -5,8 +5,8 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Fri 14 Sep 2012 08:35:54 AM EDT
-" Tag            : [ vim, syntax ]
+" Last Modified  : Tue 18 Sep 2012 01:24:42 PM EDT
+" Tag            : [ vim, buffer ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
 " =============== ============================================================

@@ -4,14 +4,12 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Sun 09 Sep 2012 11:21:58 PM EDT
+" Last Modified  : Tue 18 Sep 2012 12:56:00 PM EDT
 " Tag            : [ vim, library ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
 " =============== ============================================================
 
-let s:save_cpo = &cpo
-set cpo&vim
 
 " ============================================================================
 " Initialization:                                                         [[[1
@@ -69,15 +67,15 @@ function! zlib#rc#load_guard(prefix, vim_version, zlib_version,exprs,...)"[[[2
     " Raise   :
     "
     " Example : >
-    "   if !zlib#rc#load_guard('x_' . expand('<sfile>:t:r'), 702, 100, ['!&cp'])
+    "   if !zlib#rc#load_guard(expand('<sfile>:t:r'), 702, 100, ['!&cp'])
     "       finish
     "   endif
     "
     " Details :
-    "   1. g:loaded_xlib_{script name} is loaded if pass:
-    "   2. vim version > 702
-    "   3. zlib version > 100
-    "   4. test !&cp is true
+    "   g:loaded_{script name} is defined as 1 if:
+    "     - vim version > 702
+    "     - zlib version > 100
+    "     - test !&cp is true
     "
     " Refer   :
     "--------- ------------------------------------------------
@@ -130,7 +128,7 @@ function! zlib#rc#script_force_reload(...) " (script)                     [[[2
     "
     " Args    : script path or current script by default
     " Return  :
-    " Raise   :
+    " Raise   : E484: cannot open file
     "
     "--------- ------------------------------------------------
     let script = a:0 >= 1 ? a:1 : '%'
@@ -197,7 +195,7 @@ function! zlib#rc#set_default(var, ...) "  ('var', val) || ( {dict} )     [[[2
             throw "zlib: should call with default value for " . a:var
         endif
     else
-        throw "zlib: unsupported type for a:var"
+        throw "zlib: unsupported type: " . type(a:var)
     endif
 endfunction
 
@@ -219,7 +217,4 @@ endfunction
 " ============================================================================
 " Modeline:                                                               [[[1
 " ============================================================================
-let &cpo = s:save_cpo
-unlet s:save_cpo
-
 " vim: set ft=vim ts=4 sw=4 tw=78 fdm=syntax fmr=[[[,]]] fdl=1 :

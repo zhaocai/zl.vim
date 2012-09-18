@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Sat 15 Sep 2012 02:09:57 AM EDT
+" Last Modified  : Tue 18 Sep 2012 10:08:54 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -99,12 +99,41 @@ endfunction
 
 
 " ============================================================================
+" Size:                                                                   [[[1
+" ============================================================================
+function! zlib#window#golden_ratio_width()
+    return &columns / 1.618
+endfunction
+
+function! zlib#window#golden_ratio_height()
+    return &lines / 1.618
+endfunction
+
+
+" ============================================================================
 " Split:                                                                  [[[1
 " ============================================================================
 
-function! zlib#window#nicely_split_cmd()
-    return (winwidth(0) > 2 * &winwidth
-                \ ? 'vsplit' : 'split')
+function! zlib#window#nicely_split_cmd(...)
+    let opts = {
+                \ 'winnr' : 0 ,
+            \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
+
+    let ww = winwidth(opts['winnr'])
+    let tw = &textwidth
+
+    if tw != 0 && ww > 1.618 * tw
+        return 'vsplit'
+    endif
+
+    if ww > 2 * &winwidth
+        return 'vsplit'
+    endif
+
+    return 'split'
 endfunction
 
 function! zlib#window#split_nicely()
