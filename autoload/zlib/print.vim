@@ -4,20 +4,12 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Tue 18 Sep 2012 01:38:18 PM EDT
+" Last Modified  : Tue 18 Sep 2012 06:29:20 PM EDT
 " Tag            : [ vim, print ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
 " =============== ============================================================
 
-
-
-" ============================================================================
-" Load Guard:                                                             [[[1
-" ============================================================================
-if !zlib#rc#load_guard('zlib_'.expand('<sfile>:t:r'), 700, 100, ['!&cp'])
-    finish
-endif
 
 
 
@@ -34,7 +26,6 @@ function! zlib#print#echomsg(message, ...)
     "  - message to print
     "  - opts : >
     "  {
-    "    'msg' : 'message to print' ,
     "    'hl'  : 'MoreMsg'          ,
     "  }
     " Return  :
@@ -57,14 +48,17 @@ function! zlib#print#echomsg(message, ...)
 endfunction
 
 function! zlib#print#warning(message)
-    call zlib#print#echomsg(message, {'hl':'WarningMsg'})
+    call zlib#print#echomsg(a:message, {'hl':'WarningMsg'})
 endfunction
 function! zlib#print#error(message)
-    call zlib#print#echomsg(message, {'hl':'ErrorMsg'})
+    call zlib#print#echomsg(a:message, {'hl':'ErrorMsg'})
 endfunction
 function! zlib#print#moremsg(message)
-    call zlib#print#echomsg(message, {'hl':'MoreMsg'})
+    call zlib#print#echomsg(a:message, {'hl':'MoreMsg'})
 endfunction
+
+
+
 
 " ============================================================================
 " Modeline:                                                               [[[1
