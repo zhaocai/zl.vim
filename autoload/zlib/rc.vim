@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Tue 18 Sep 2012 12:56:00 PM EDT
+" Last Modified  : Thu 20 Sep 2012 12:58:34 AM EDT
 " Tag            : [ vim, library ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -15,7 +15,7 @@
 " Initialization:                                                         [[[1
 " ============================================================================
 
-let s:ZLIB_VERSION_CURRENT = 100
+let s:ZLIB_VERSION_CURRENT = 110
 
 let s:VERSION_FACTOR = str2float('0.01')
 
