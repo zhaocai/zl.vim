@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 20 Sep 2012 06:59:16 PM EDT
+" Last Modified  : Thu 20 Sep 2012 07:24:11 PM EDT
 " Tag            : [ vim, rule ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -15,7 +15,6 @@
 " ============================================================================
 " Rule:                                                                   [[[1
 " ============================================================================
-" [TODO]( apply to hl cword ) @zhaocai @start(2012-09-20 10:12)
 function! zl#rule#norm(urule, ...)
     "--------- ------------------------------------------------
     " Desc    : normalize rules
@@ -28,7 +27,7 @@ function! zl#rule#norm(urule, ...)
     " Args    :
     "   - urule: un-normalized rules
     "   - opts :
-    "     - eval_order : ['filetype', 'bufname', 'syntax', 'expr'],
+    "     - eval_order : ['filetype', 'mode', 'bufname', 'syntax', 'expr'],
     "     - logic      :
     "       - or     : 'v:filetype || v:bufname || v:syntax || v:expr'
     "       - and    : 'v:filetype && v:bufname && v:syntax && v:expr'

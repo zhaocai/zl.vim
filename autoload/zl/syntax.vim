@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 20 Sep 2012 04:25:15 PM EDT
+" Last Modified  : Thu 20 Sep 2012 07:21:17 PM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -27,7 +27,7 @@
 "
 "  Feature: Ignore certain syntax group
 "
-"   Config: 1. g:zl_hl_cword_disable_hlgroup
+"   Config: 1. g:zl_hl_cword_disable_syntax
 "           2. g:zl_hl_cword_hlgroup
 "
 "  Example: >
@@ -37,20 +37,27 @@
 
 let s:zl_hl_cword_hlgroup = 'ZlCword'
 call zl#rc#set_default({
-            \ 'g:zl_hl_cword_disable_hlgroup'    : {
-            \     'Statement'        : 1 ,
-            \     'SpecialStatement' : 1 ,
-            \     'Comment'          : 1 ,
-            \     'Delimiter'        : 1 ,
-            \     'Structure'        : 1 ,
-            \     'Type'             : 1 ,
-            \     'Conditional'      : 1 ,
-            \     'Class'            : 1 ,
-            \     'StorageClass'     : 1 ,
+            \ 'g:zl_hl_cword__ignore_urule' : {
+            \   'syntax' : [
+            \     'Statement'        ,
+            \     'SpecialStatement' ,
+            \     'Comment'          ,
+            \     'Delimiter'        ,
+            \     'Structure'        ,
+            \     'Type'             ,
+            \     'Conditional'      ,
+            \     'Class'            ,
+            \     'StorageClass'     ,
+            \   ]
             \ }
             \
             \ , 'g:zl_hl_cword_hlgroup' : s:zl_hl_cword_hlgroup
         \ })
+let s:zl_hl_cword__ignore_nrule = zl#rule#norm(
+            \   g:zl_hl_cword__ignore_urule, {
+            \     'logic' : 'or',
+            \   }
+            \ )
 
 function! zl#syntax#hl_cword_toggle()
     if exists('b:zl_hl_cword_auto') && b:zl_hl_cword_auto == 1
@@ -65,8 +72,7 @@ endfunction
 function! zl#syntax#hl_cword()
     call <SID>zl_hl_cword_clear()
 
-    if !has_key(g:zl_hl_cword_disable_hlgroup
-                \ , zl#syntax#cursor_trans_hlgroup())
+    if zl#rule#is_false(s:zl_hl_cword__ignore_nrule)
         let pattern = '\V\<' . zl#regex#escape(expand('<cword>'), 'V') . '\>'
         if g:zl_hl_cword_hlgroup == 'ZlCword'
             exec 'hi '
