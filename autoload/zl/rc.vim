@@ -15,7 +15,7 @@
 " Initialization:                                                         [[[1
 " ============================================================================
 
-let s:ZLIB_VERSION_CURRENT = 110
+let s:ZL_VERSION_CURRENT = 110
 
 let s:VERSION_FACTOR = str2float('0.01')
 

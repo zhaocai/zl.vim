@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 20 Sep 2012 04:25:13 PM EDT
+" Last Modified  : Thu 20 Sep 2012 06:59:16 PM EDT
 " Tag            : [ vim, rule ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -15,7 +15,6 @@
 " ============================================================================
 " Rule:                                                                   [[[1
 " ============================================================================
-" [TODO]( mode ) @zhaocai @start(2012-09-20 10:12)
 " [TODO]( apply to hl cword ) @zhaocai @start(2012-09-20 10:12)
 function! zl#rule#norm(urule, ...)
     "--------- ------------------------------------------------
@@ -44,9 +43,12 @@ function! zl#rule#norm(urule, ...)
     "--------- ------------------------------------------------
 
     let nrule = {
-              \ 'eval_order' : ['filetype', 'bufname', 'syntax', 'expr'],
+              \ 'eval_order' : [
+              \   'filetype' , 'mode' , 'bufname' ,
+              \   'syntax'   , 'expr' ,
+              \ ],
               \ 'logic'      : 'or',
-              \ 'rule'       : {},
+              \ 'rule'       : {}  ,
               \ }
     if a:0 >= 1 && zl#var#is_dict(a:1)
         call extend(nrule, a:1)
@@ -57,19 +59,29 @@ function! zl#rule#norm(urule, ...)
             let nrule.rule[type] = '\%(' . join(a:urule[type], '\|') . '\)'
         endif
     endfor
+
+    for type in ['mode']
+        if has_key(a:urule, type)
+            let nrule.rule[type] = a:urule[type]
+        endif
+    endfor
+
     for type in ['expr']
         if has_key(a:urule, type)
-            let nrule.rule[type] =
-            \ join(
-            \   map(
-            \     map(
-            \       a:urule[type]
-            \       ,"join(v:val,' || ')"
-            \     )
-            \     , "'('.v:val.')'"
-            \   )
-            \   ,' && '
-            \ )
+            try | let nrule.rule[type] =
+                \ join(
+                \   map(
+                \     map(
+                \       a:urule[type]
+                \       ,"join(v:val,' || ')"
+                \     )
+                \     , "'('.v:val.')'"
+                \   )
+                \   ,' && '
+                \ )
+            catch /^Vim\%((\a\+)\)\=:E714/ " E714: List required
+                throw 'GoldenView: expr rule should be written as list of lists.'
+            endtry
         endif
     endfor
 
@@ -152,6 +164,22 @@ function! s:eval_bufname(rule, ...)
     return call('s:eval_match', ['bufname', bufname('%'), a:rule] + a:000)
 endfunction
 
+function! s:eval_mode(rule, ...)
+    let rule_mode    = get(a:rule, 'mode', [])
+    let current_mode =
+    \ a:0 >= 1 && zl#var#is_dict(a:1)
+    \ ? get(a:1, 'mode', mode())
+    \ : mode()
+
+    return
+    \ !empty(
+    \   filter(
+    \     rule_mode
+    \     , 'stridx(current_mode, v:val) == -1'
+    \   )
+    \ )
+endfunction
+
 function! s:eval_syntax(rule, ...)
     let pat = get(a:rule, 'syntax', '')
 
@@ -163,7 +191,6 @@ function! s:eval_syntax(rule, ...)
 
     return !empty(filter(syn_names, 'match(v:val, pat) != -1'))
 endfunction
-
 
 function! s:eval_expr(rule, ...)
     try
