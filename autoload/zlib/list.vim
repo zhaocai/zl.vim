@@ -2,22 +2,14 @@
 " Name           : list
 " Synopsis       : vim list library
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : [TODO]( HomePage )
+" HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Tue 11 Sep 2012 04:03:39 AM EDT
+" Last Modified  : Wed 19 Sep 2012 07:27:19 PM EDT
 " Tag            : [ vim, list ]
 " Copyright      : (c) 2012 by Zhao Cai,
 "                  Released under current GPL license.
 " =============== ============================================================
-
-
-" ============================================================================
-" Load Guard:                                                             [[[1
-" ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
-    finish
-endif
 
 
 
@@ -100,6 +92,23 @@ function! zlib#list#sort(list, expr)
 endfunction
 
 
+function! zlib#list#uniq(list, ...)
+    let list = a:0
+             \ ? map(copy(a:list), printf('[v:val, %s]', a:1))
+             \ : copy(a:list)
+    let i = 0
+    let seen = {}
+    while i < len(list)
+        let key = string(a:0 ? list[i][1] : list[i])
+        if has_key(seen, key)
+            call remove(list, i)
+        else
+            let seen[key] = 1
+            let i += 1
+        endif
+    endwhile
+    return a:0 ? map(list, 'v:val[0]') : list
+endfunction
 
 
 
