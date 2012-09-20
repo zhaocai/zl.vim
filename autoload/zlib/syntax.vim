@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 20 Sep 2012 12:28:15 AM EDT
+" Last Modified  : Thu 20 Sep 2012 04:11:17 PM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -67,7 +67,7 @@ function! zlib#syntax#hl_cword()
 
     if !has_key(g:zlib_hl_cword_disable_hlgroup
                 \ , zlib#syntax#cursor_trans_hlgroup())
-        let pattern = '\V\<' . escape(expand('<cword>'), '\') . '\>'
+        let pattern = '\V\<' . zlib#regex#escape(expand('<cword>'), 'V') . '\>'
         if g:zlib_hl_cword_hlgroup == 'ZlibCword'
             exec 'hi '
                 \ . g:zlib_hl_cword_hlgroup

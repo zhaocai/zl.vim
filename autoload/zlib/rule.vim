@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 20 Sep 2012 12:54:28 AM EDT
+" Last Modified  : Thu 20 Sep 2012 10:12:27 AM EDT
 " Tag            : [ vim, rule ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -15,7 +15,8 @@
 " ============================================================================
 " Rule:                                                                   [[[1
 " ============================================================================
-
+" [TODO]( mode ) @zhaocai @start(2012-09-20 10:12)
+" [TODO]( apply to hl cword ) @zhaocai @start(2012-09-20 10:12)
 function! zlib#rule#norm(urule, ...)
     "--------- ------------------------------------------------
     " Desc    : normalize rules
@@ -53,7 +54,7 @@ function! zlib#rule#norm(urule, ...)
 
     for type in ['filetype', 'bufname', 'syntax']
         if has_key(a:urule, type)
-            let nrule.rule[type] = '^\%(' . join(a:urule[type], '\|') . '\)$'
+            let nrule.rule[type] = '\%(' . join(a:urule[type], '\|') . '\)'
         endif
     endfor
     for type in ['expr']
@@ -134,7 +135,6 @@ function! zlib#rule#logic_expr(nrule, ...)
                 \ , 'ge'
                 \ )
     endfor
-    call tlog#Log("str: " . PP(str))
     " should contain only numbers and logic operators now
     if match(str, '\a') != -1
         throw 'zlib: invalid logic expr ' . str
