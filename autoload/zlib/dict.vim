@@ -4,18 +4,11 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Tue 04 Sep 2012 02:36:52 AM EDT
+" Last Modified  : Wed 19 Sep 2012 06:48:28 PM EDT
 " Tag            : [ vim, library, Dictionary ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
 " =============== ============================================================
-
-" ============================================================================
-" Load Guard:                                                             [[[1
-" ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
-    finish
-endif
 
 
 

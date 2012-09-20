@@ -1,10 +1,10 @@
 " =============== ============================================================
 " Name           : fold
-" Description    : vim fold library
+" Description    : vim script library: fold
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : [TODO]( http://HomePage )
+" HomePage       : https://github.com/zhaocai/zlib.vim
 " Date Created   : Thu 30 Aug 2012 10:56:47 PM EDT
-" Last Modified  : Wed 05 Sep 2012 04:59:27 PM EDT
+" Last Modified  : Wed 19 Sep 2012 07:06:20 PM EDT
 " Tag            : [ vim, fold ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -12,39 +12,71 @@
 
 
 
-" ============================================================================
-" Load Guard:                                                             [[[1
-" ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
-    finish
-endif
-
 
 " ============================================================================
-" Check:                                                             [[[1
+" Check Status:                                                           [[[1
 " ============================================================================
 
 function! zlib#fold#has_fold() "                                          [[[2
-    let lnum=1
-    while lnum <= line("$")
+    "--------- ------------------------------------------------
+    " Desc    : check if current file has fold!
+    "
+    " Args    : > opts
+    "
+    " Return  :
+    "   - 1 : true
+    "   - 0 : false
+    "
+    " Raise   :
+    "
+    "
+    " Detail  : use random_check mode for large file which has
+    "           no foldings.
+    "
+    " Example : > autocmd to set foldcolumn to 0 if !has_fold()
+    "--------- ------------------------------------------------
+
+    let last_line = line('$')
+    let opts = {
+             \ 'start_line' : 1              ,
+             \ 'end_line'   : last_line      ,
+             \ 'mode'       : 'random_check' ,
+             \ }
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
+        call extend(opts, a:1)
+    endif
+
+    let check_lines = []
+    if opts['mode'] == 'random_check'
+        let times = last_line > 9 ? 9 : last_line
+        while times > 0
+            call add(check_lines, float2nr(zlib#math#rand()*last_line))
+            let times -= 1
+        endwhile
+    else
+        let check_lines = range(opts['start_line'], opts['end_line'])
+    endif
+
+    for lnum in check_lines
         if (foldlevel(lnum) > 0)
             return 1
         endif
-        let lnum+=1
-    endwhile
+        let lnum += 1
+    endfor
     return 0
 endfunction
 
 
 " ============================================================================
-" Foldtext:                                                             [[[1
+" Foldtext:                                                               [[[1
 " ============================================================================
 
 function! zlib#fold#foldtext(...) "                                       [[[2
     "--------- ------------------------------------------------
     " Desc    : foldtext func
     "
-    " Args    : opts = {
+    " Args    :
+    "   - opts : {
     "     line                : first non blank line
     "     fold_bullet         : ''
     "     fold_level          : v:foldlevel
@@ -58,7 +90,7 @@ function! zlib#fold#foldtext(...) "                                       [[[2
     "
     "--------- ------------------------------------------------
 
-    let opts =  a:0 >= 1 && type(a:1) == type({}) ?  a:1  :  {}
+    let opts = a:0 >= 1 && zlib#var#is_dict(a:1) ?  a:1  :  {}
 
     " process options
     " ---------------
