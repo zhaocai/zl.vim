@@ -5,19 +5,11 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Sun 16 Sep 2012 09:34:39 AM EDT
+" Last Modified  : Thu 20 Sep 2012 12:28:15 AM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
 " =============== ============================================================
-
-
-" ============================================================================
-" Load Guard:                                                             [[[1
-" ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
-    finish
-endif
 
 
 
@@ -155,6 +147,42 @@ endfunction
 " ============================================================================
 " Syntax Highlight Info:                                                  [[[1
 " ============================================================================
+function! zlib#syntax#cursor_col(...) "                                   [[[2
+    let mode = a:0 >= 1 ? a:1 : mode()
+    return(mode ==# 'i' ? col('.') - 1 : col('.'))
+endfunction
+
+
+function! zlib#syntax#synstack_names(...) "                               [[[2
+    "--------- ------------------------------------------------
+    " Desc    : Get actual syntax stack names of under cursor
+    "
+    " Args    :
+    "
+    "   - opts : >
+    "   {
+    "      'line' : line number   ,
+    "      'col'  : column number ,
+    "   }
+    " Return  : all synstack group names
+    " Raise   :
+    "--------- ------------------------------------------------
+    let opts = {
+                \ 'line' : line('.') ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
+                \}
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
+        call extend(opts, a:1)
+    endif
+
+    let syn_stack = synstack(opts['line'], opts['col'])
+    return zlib#list#uniq(
+        \  map(copy(syn_stack), 'synIDattr(synIDtrans(v:val), "name")')
+        \+ map(syn_stack, 'synIDattr(v:val, "name")')
+        \ )
+endfunction
+
+
 
 
 function! zlib#syntax#cursor_hlgroup(...) "                               [[[2
@@ -166,7 +194,7 @@ function! zlib#syntax#cursor_hlgroup(...) "                               [[[2
     "   - opts : >
     "   {
     "      'line' : line('.') ,
-    "      'col'  : col('.')  ,
+    "      'col'  : zlib#syntax#cursor_col()  ,
     "   }
     "
     " Return  : Highlight group name
@@ -175,9 +203,9 @@ function! zlib#syntax#cursor_hlgroup(...) "                               [[[2
 
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
     return synIDattr(synID(opts['line'], opts['col'], 1), "name")
@@ -192,16 +220,16 @@ function! zlib#syntax#cursor_trans_hlgroup(...) "                         [[[2
     "   - opts : >
     "   {
     "      'line' : line('.') ,
-    "      'col'  : col('.')  ,
+    "      'col'  : zlib#syntax#cursor_col()  ,
     "   }
     " Return  : Translated highlight group name
     " Raise   :
     "--------- ------------------------------------------------
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -217,16 +245,16 @@ function! zlib#syntax#cursor_synid(...) "                                 [[[2
     "   - opts : >
     "   {
     "      'line' : line('.') ,
-    "      'col'  : col('.')  ,
+    "      'col'  : zlib#syntax#cursor_col()  ,
     "   }
     " Return  : syntax ID
     " Raise   :
     "--------- ------------------------------------------------
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -263,16 +291,16 @@ function! zlib#syntax#cursor_gui(...) "                                   [[[2
     "   - opts : >
     "   {
     "      'line' : line('.') ,
-    "      'col'  : col('.')  ,
+    "      'col'  : zlib#syntax#cursor_col()  ,
     "   }
     " Return  : gui
     " Raise   :
     "--------- ------------------------------------------------
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -312,16 +340,16 @@ function! zlib#syntax#cursor_guifg(...) "                                 [[[2
     "   - opts : >
     "   {
     "      'line' : line('.') ,
-    "      'col'  : col('.')  ,
+    "      'col'  : zlib#syntax#cursor_col()  ,
     "   }
     " Return  : guifg
     " Raise   :
     "--------- ------------------------------------------------
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -348,7 +376,7 @@ function! zlib#syntax#cursor_guibg(...) "                                 [[[2
     "   - opts : >
     "   {
     "      'line' : line('.') ,
-    "      'col'  : col('.')  ,
+    "      'col'  : zlib#syntax#cursor_col()  ,
     "   }
     "
     " Return  : guibg
@@ -356,9 +384,9 @@ function! zlib#syntax#cursor_guibg(...) "                                 [[[2
     "--------- ------------------------------------------------
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -384,16 +412,16 @@ function! zlib#syntax#cursor_hl(...) "                                    [[[2
     "   - opts : >
     "   {
     "      'line' : line('.') ,
-    "      'col'  : col('.')  ,
+    "      'col'  : zlib#syntax#cursor_col()  ,
     "   }
     " Return  : Syntax highlight info under cursor
     " Raise   :
     "--------- ------------------------------------------------
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -415,9 +443,9 @@ function! zlib#syntax#cursor_hl_echo(...) "                               [[[2
     "--------- ------------------------------------------------
     let opts = {
                 \ 'line' : line('.') ,
-                \ 'col'  : col('.')  ,
+                \ 'col'  : zlib#syntax#cursor_col()  ,
                 \}
-    if a:0 >= 1 && type(a:1) == type({})
+    if a:0 >= 1 && zlib#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
