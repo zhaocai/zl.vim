@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zlib.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Tue 18 Sep 2012 10:08:54 AM EDT
+" Last Modified  : Wed 19 Sep 2012 06:31:58 PM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -76,6 +76,7 @@ endfunction
 " ============================================================================
 " Move:                                                                   [[[1
 " ============================================================================
+let s:golden_ratio = 1.618
 function! zlib#window#next_window_or_tab()
     if tabpagenr('$') == 1 && winnr('$') == 1
         call zlib#window#split_nicely()
@@ -102,11 +103,11 @@ endfunction
 " Size:                                                                   [[[1
 " ============================================================================
 function! zlib#window#golden_ratio_width()
-    return &columns / 1.618
+    return &columns / s:golden_ratio
 endfunction
 
 function! zlib#window#golden_ratio_height()
-    return &lines / 1.618
+    return &lines / s:golden_ratio
 endfunction
 
 
@@ -125,11 +126,11 @@ function! zlib#window#nicely_split_cmd(...)
     let ww = winwidth(opts['winnr'])
     let tw = &textwidth
 
-    if tw != 0 && ww > 1.618 * tw
+    if tw != 0 && ww > s:golden_ratio * tw
         return 'vsplit'
     endif
 
-    if ww > 2 * &winwidth
+    if ww > &columns / s:golden_ratio
         return 'vsplit'
     endif
 
@@ -163,15 +164,16 @@ function! zlib#window#sort_by(...)
     " Args    :
     "   - opts : > ↓
     "   {
-    "     'by'            : 'size'|'height'|'width' ,
-    "     'tabnr'         : tabpagenr()             ,
-    "     'width_weight'  : 1.618                   ,
-    "     'height_weight' : 1                       ,
+    "     'by'            : size|height|width|winnr|bufnr ,
+    "     'tabnr'         : tabpagenr()                   ,
+    "     'width_weight'  : s:golden_ratio                ,
+    "     'height_weight' : 1                             ,
     "   }
     "
     " Return  : sorted list of
     "   {
     "     'bufnr'  : bufnr  ,
+    "     'winnr'  : winnr  ,
     "     'width'  : width  ,
     "     'height' : height ,
     "     'size'   : size   ,
@@ -184,7 +186,7 @@ function! zlib#window#sort_by(...)
     let opts = {
                 \ 'by'            : 'size' ,
                 \ 'tabnr'         : tabpagenr() ,
-                \ 'width_weight'  : 1.618       ,
+                \ 'width_weight'  : s:golden_ratio       ,
                 \ 'height_weight' : 1           ,
             \}
     if a:0 >= 1 && type(a:1) == type({})
@@ -197,10 +199,11 @@ function! zlib#window#sort_by(...)
         let width  = winwidth(winnr)
         let height = winheight(winnr)
         let size   = width * opts['width_weight']
-                    \ + height * opts['height_weight']
+                 \ + height * opts['height_weight']
 
         call add(list, {
                     \ 'bufnr'  : bufnr  ,
+                    \ 'winnr'  : winnr  ,
                     \ 'width'  : width  ,
                     \ 'height' : height ,
                     \ 'size'   : size   ,
@@ -256,7 +259,8 @@ function! zlib#window#switch_buffer_toggle(...)
     endif
 endfunction
 
-function! zlib#window#switch_buffer_with_largest(...)
+
+function! zlib#window#switch_buffer_with_sorted_by_size_index(index, ...)
     "--------- ------------------------------------------------
     " Desc    : switch buffer with the largest window
     "
@@ -266,7 +270,7 @@ function! zlib#window#switch_buffer_with_largest(...)
     "     'bufnr'         : bufnr('%')              ,
     "     'by'            : 'size'|'height'|'width' ,
     "     'tabnr'         : tabpagenr()             ,
-    "     'width_weight'  : 1.618                   ,
+    "     'width_weight'  : s:golden_ratio                   ,
     "     'height_weight' : 1                       ,
     "   }
     "
@@ -280,19 +284,28 @@ function! zlib#window#switch_buffer_with_largest(...)
 
 
     let opts = {
-                \ 'bufnr'         : bufnr('%')  ,
-                \ 'by'            : 'size'      ,
-                \ 'tabnr'         : tabpagenr() ,
-                \ 'width_weight'  : 1.618       ,
-                \ 'height_weight' : 1           ,
-            \}
+                \ 'bufnr'         : bufnr('%')     ,
+                \ 'by'            : 'size'         ,
+                \ 'tabnr'         : tabpagenr()    ,
+                \ 'width_weight'  : s:golden_ratio ,
+                \ 'height_weight' : 1              ,
+                \}
     if a:0 >= 1 && type(a:1) == type({})
         call extend(opts, a:1)
     endif
 
     let sorted = zlib#window#sort_by(filter(copy(opts),'v:key != "bufnr"'))
-    let bufnr_to = sorted[-1]['bufnr']
+    let bufnr_to = sorted[a:index]['bufnr']
     call zlib#window#switch_buffer(opts['bufnr'], bufnr_to)
+endfunction
+
+
+function! zlib#window#switch_buffer_with_largest(...)
+    call zlib#window#switch_buffer_with_sorted_by_size_index(-1, a:000)
+endfunction
+
+function! zlib#window#switch_buffer_with_smallest(...)
+    call zlib#window#switch_buffer_with_sorted_by_size_index(0, a:000)
 endfunction
 
 function! zlib#window#switch_buffer(bufnr1, bufnr2)
