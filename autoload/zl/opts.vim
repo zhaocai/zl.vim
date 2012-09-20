@@ -2,9 +2,9 @@
 " Name           : opts.vim
 " Description    : vim library: options
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Tue 04 Sep 2012 03:03:14 AM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:11 PM EDT
 " Tag            : [ vim, library, options ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -13,7 +13,7 @@
 " ============================================================================
 " Load Guard:                                                             [[[1
 " ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
+if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
     finish
 endif
 
@@ -27,7 +27,7 @@ endif
 " ============================================================================
 " Parse Options:                                                          [[[1
 " ============================================================================
-fun! zlib#opts#parse(argline, option_list) "                              [[[2
+fun! zl#opts#parse(argline, option_list) "                              [[[2
     "--------- ------------------------------------------------
     " Desc    : parse command line options
     "
@@ -40,7 +40,7 @@ fun! zlib#opts#parse(argline, option_list) "                              [[[2
     " Example : >
     "   let argline = 'Cmd abc def -a -b -c=c_value -d'
     "   let opts = ['-a', '-b', '-c=']
-    "   let [args, options] = zlib#util#parse_options(argline, opts)
+    "   let [args, options] = zl#util#parse_options(argline, opts)
     "
     " Refer   : Unite.vim
     "--------- ------------------------------------------------

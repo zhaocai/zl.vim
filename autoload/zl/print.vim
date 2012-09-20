@@ -2,9 +2,9 @@
 " Name           : print.vim
 " Synopsis       : vim script library: print
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Tue 18 Sep 2012 06:29:20 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:11 PM EDT
 " Tag            : [ vim, print ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -18,7 +18,7 @@
 " Echo Message:                                                           [[[1
 " ============================================================================
 
-function! zlib#print#echomsg(message, ...)
+function! zl#print#echomsg(message, ...)
     "--------- ------------------------------------------------
     " Desc    : echomsg wrapper
     "
@@ -47,14 +47,14 @@ function! zlib#print#echomsg(message, ...)
     echohl NONE
 endfunction
 
-function! zlib#print#warning(message)
-    call zlib#print#echomsg(a:message, {'hl':'WarningMsg'})
+function! zl#print#warning(message)
+    call zl#print#echomsg(a:message, {'hl':'WarningMsg'})
 endfunction
-function! zlib#print#error(message)
-    call zlib#print#echomsg(a:message, {'hl':'ErrorMsg'})
+function! zl#print#error(message)
+    call zl#print#echomsg(a:message, {'hl':'ErrorMsg'})
 endfunction
-function! zlib#print#moremsg(message)
-    call zlib#print#echomsg(a:message, {'hl':'MoreMsg'})
+function! zl#print#moremsg(message)
+    call zl#print#echomsg(a:message, {'hl':'MoreMsg'})
 endfunction
 
 

@@ -2,9 +2,9 @@
 " Name           : fold
 " Description    : vim script library: fold
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Thu 30 Aug 2012 10:56:47 PM EDT
-" Last Modified  : Wed 19 Sep 2012 07:06:20 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:08 PM EDT
 " Tag            : [ vim, fold ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -17,7 +17,7 @@
 " Check Status:                                                           [[[1
 " ============================================================================
 
-function! zlib#fold#has_fold() "                                          [[[2
+function! zl#fold#has_fold() "                                          [[[2
     "--------- ------------------------------------------------
     " Desc    : check if current file has fold!
     "
@@ -42,7 +42,7 @@ function! zlib#fold#has_fold() "                                          [[[2
              \ 'end_line'   : last_line      ,
              \ 'mode'       : 'random_check' ,
              \ }
-    if a:0 >= 1 && zlib#var#is_dict(a:1)
+    if a:0 >= 1 && zl#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -50,7 +50,7 @@ function! zlib#fold#has_fold() "                                          [[[2
     if opts['mode'] == 'random_check'
         let times = last_line > 9 ? 9 : last_line
         while times > 0
-            call add(check_lines, float2nr(zlib#math#rand()*last_line))
+            call add(check_lines, float2nr(zl#math#rand()*last_line))
             let times -= 1
         endwhile
     else
@@ -71,7 +71,7 @@ endfunction
 " Foldtext:                                                               [[[1
 " ============================================================================
 
-function! zlib#fold#foldtext(...) "                                       [[[2
+function! zl#fold#foldtext(...) "                                       [[[2
     "--------- ------------------------------------------------
     " Desc    : foldtext func
     "
@@ -90,7 +90,7 @@ function! zlib#fold#foldtext(...) "                                       [[[2
     "
     "--------- ------------------------------------------------
 
-    let opts = a:0 >= 1 && zlib#var#is_dict(a:1) ?  a:1  :  {}
+    let opts = a:0 >= 1 && zl#var#is_dict(a:1) ?  a:1  :  {}
 
     " process options
     " ---------------

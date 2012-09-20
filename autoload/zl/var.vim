@@ -2,9 +2,9 @@
 " Name           : var.vim
 " Synopsis       : vim script library: variable
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Tue 18 Sep 2012 07:33:57 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:16 PM EDT
 " Tag            : [ vim, variable ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -15,7 +15,7 @@
 " ============================================================================
 " Set Options With Undo Command:                                          [[[1
 " ============================================================================
-function! zlib#var#set_undo_command(opts)
+function! zl#var#set_undo_command(opts)
 
     "--------- ------------------------------------------------
     " Desc    : set options and return undo command
@@ -30,12 +30,12 @@ function! zlib#var#set_undo_command(opts)
     "      'setlocal_bang' : [] ,
     "   }
     "
-    " Return  : undo command for zlib#var#exe_undo_command
+    " Return  : undo command for zl#var#exe_undo_command
     "
     " Raise   :
     "
     " Example : >
-    "   let b:undo_fold_settings = zlib#var#set_undo_command({
+    "   let b:undo_fold_settings = zl#var#set_undo_command({
     "       \ 'setlocal' : {
     "       \   'foldexpr'     : '(getline(v:lnum)=~@/)?0:1' ,
     "       \   'foldmethod'   : 'expr'                      ,
@@ -46,7 +46,7 @@ function! zlib#var#set_undo_command(opts)
     "       \ })
     "
     "   " do something ...
-    "   call zlib#var#exe_undo_command('b:undo_fold_settings')
+    "   call zl#var#exe_undo_command('b:undo_fold_settings')
     "--------- ------------------------------------------------
 
     let undo_command = ''
@@ -71,11 +71,11 @@ function! zlib#var#set_undo_command(opts)
     return undo_command
 endfunction
 
-function! zlib#var#exe_undo_command(var)
+function! zl#var#exe_undo_command(var)
     try
         exec {a:var}
     catch /^Vim\%((\a\+)\)\=:E/
-        throw 'zlib: undo command error! ' . v:exception
+        throw 'zl: undo command error! ' . v:exception
     finally
         unlet {a:var}
     endtry
@@ -112,36 +112,36 @@ let [
 " This doesn't match to anything.
 
 " Number or Float
-function! zlib#var#is_numeric(Value)
+function! zl#var#is_numeric(Value)
   let _ = type(a:Value)
   return _ ==# s:__TYPE_NUMBER
   \   || _ ==# s:__TYPE_FLOAT
 endfunction
 " Number
-function! zlib#var#is_integer(Value)
+function! zl#var#is_integer(Value)
   return type(a:Value) ==# s:__TYPE_NUMBER
 endfunction
-function! zlib#var#is_number(Value)
+function! zl#var#is_number(Value)
   return type(a:Value) ==# s:__TYPE_NUMBER
 endfunction
 " Float
-function! zlib#var#is_float(Value)
+function! zl#var#is_float(Value)
   return type(a:Value) ==# s:__TYPE_FLOAT
 endfunction
 " String
-function! zlib#var#is_string(Value)
+function! zl#var#is_string(Value)
   return type(a:Value) ==# s:__TYPE_STRING
 endfunction
 " Funcref
-function! zlib#var#is_funcref(Value)
+function! zl#var#is_funcref(Value)
   return type(a:Value) ==# s:__TYPE_FUNCREF
 endfunction
 " List
-function! zlib#var#is_list(Value)
+function! zl#var#is_list(Value)
   return type(a:Value) ==# s:__TYPE_LIST
 endfunction
 " Dictionary
-function! zlib#var#is_dict(Value)
+function! zl#var#is_dict(Value)
   return type(a:Value) ==# s:__TYPE_DICT
 endfunction
 

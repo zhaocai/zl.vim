@@ -2,9 +2,9 @@
 " Name           : ft.vim
 " Description    : vim library: filetype
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Sat 15 Sep 2012 02:08:28 AM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:09 PM EDT
 " Tag            : [ vim, library, filetype ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -13,7 +13,7 @@
 " ============================================================================
 " Load Guard:                                                             [[[1
 " ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
+if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
     finish
 endif
 
@@ -50,11 +50,11 @@ function! s:ftdetect(filename)
     endfor
 
     " vim filetype detect
-    if !exists('b:zlib_ftdetect_buf')
-        let b:zlib_saved_lazyredraw = &lazyredraw
+    if !exists('b:zl_ftdetect_buf')
+        let b:zl_saved_lazyredraw = &lazyredraw
         set lazyredraw
         vsplit | enew
-        let b:zlib_ftdetect_buf = bufnr('%')
+        let b:zl_ftdetect_buf = bufnr('%')
     endif
     try
         silent exec 'noautocmd file ' . escape(a:filename, ' ')
@@ -70,18 +70,18 @@ function! s:ftdetect(filename)
     endtry
 endfunction
 
-function! zlib#ft#detect(filename) "                                      [[[2
+function! zl#ft#detect(filename) "                                      [[[2
     "--------- ------------------------------------------------
     " Desc    : Detect Filetype
     "
     " Args    : filename as string, list or dict
     " Return  : filetype as string, list or dict
-    " Raise   : 'zlib: unsupported type'
+    " Raise   : 'zl: unsupported type'
     "
     " Example : >
-    "   echo zlib#ft#detect('.ssh/config')
-    "   echo zlib#ft#detect(['a.vim', '.ssh/config'])
-    "   echo zlib#ft#detect({'a.vim':'', '.ssh/config':''})
+    "   echo zl#ft#detect('.ssh/config')
+    "   echo zl#ft#detect(['a.vim', '.ssh/config'])
+    "   echo zl#ft#detect({'a.vim':'', '.ssh/config':''})
     "--------- ------------------------------------------------
     try
         if type(a:filename) == type('')
@@ -91,13 +91,13 @@ function! zlib#ft#detect(filename) "                                      [[[2
         elseif type(a:filename) == type({})
             let fts = map(a:filename, '<SID>ftdetect(v:key)')
         else
-            throw 'zlib: unsupported type ' . string(type(a:filename))
+            throw 'zl: unsupported type ' . string(type(a:filename))
         endif
     finally
-        if exists('b:zlib_ftdetect_buf')
+        if exists('b:zl_ftdetect_buf')
             bwipeout!
             redraw
-            let &lazyredraw = b:zlib_saved_lazyredraw
+            let &lazyredraw = b:zl_saved_lazyredraw
         endif
 
     endtry

@@ -1,4 +1,4 @@
-# zlib.vim
+# zl.vim library
 
 This library provides vim utility functions.
 

@@ -2,9 +2,9 @@
 " Name           : math.vim
 " Synopsis       : vim script library: math
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Wed 19 Sep 2012 05:18:42 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:10 PM EDT
 " Tag            : [ vim, math ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -23,7 +23,7 @@ from random import random
 import vim
 __PY__
 
-function! zlib#math#rand()
+function! zl#math#rand()
     return pyeval('random()')
 endfunction
 

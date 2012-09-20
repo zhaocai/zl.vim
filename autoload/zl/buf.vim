@@ -2,10 +2,10 @@
 " Name           : buf.vim
 " Synopsis       : vim script library: buffer
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Tue 18 Sep 2012 01:24:42 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:07 PM EDT
 " Tag            : [ vim, buffer ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -16,7 +16,7 @@
 " ============================================================================
 " Load Guard:                                                             [[[1
 " ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
+if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
     finish
 endif
 
@@ -26,7 +26,7 @@ endif
 " ============================================================================
 " Completion:                                                             [[[1
 " ============================================================================
-function! zlib#buf#complete_name(arglead, cmdline, cursorpos) "           [[[2
+function! zl#buf#complete_name(arglead, cmdline, cursorpos) "           [[[2
     let buffer_names = []
 
     for i in range( tabpagenr('$') )
@@ -35,7 +35,7 @@ function! zlib#buf#complete_name(arglead, cmdline, cursorpos) "           [[[2
                     \ 'fnamemodify(bufname(v:val),":t") . ":" . v:val' )
     endfor
 
-    return filter( zlib#list#unique_sort(buffer_names),
+    return filter( zl#list#unique_sort(buffer_names),
                 \ 'stridx(v:val, a:arglead) == 0' )
 endfunction
 
@@ -52,17 +52,17 @@ function! s:_buf_quit_hook(cmd)
     return 0
 endfunction
 
-function! zlib#buf#quit()
+function! zl#buf#quit()
     if ! s:_buf_quit_hook('q')
         execute 'quit'
     endif
 endfunction
 
-function! zlib#buf#del(cmd)
+function! zl#buf#del(cmd)
     if ! s:_buf_quit_hook(a:cmd)
         let current = bufnr('%')
 
-        call zlib#window#alternate_buffer()
+        call zl#window#alternate_buffer()
 
         silent! execute a:cmd . ' ' . current
     endif
@@ -74,7 +74,7 @@ endfunction
 " ============================================================================
 " Goto:                                                                   [[[1
 " ============================================================================
-function! zlib#buf#goto(id)  " (buf_nr or partial_filename)               [[[2
+function! zl#buf#goto(id)  " (buf_nr or partial_filename)               [[[2
     "--------- ------------------------------------------------
     " Desc    : goto buffer if visible, otherwise open
     "
@@ -83,8 +83,8 @@ function! zlib#buf#goto(id)  " (buf_nr or partial_filename)               [[[2
     " Raise   :
     "
     " Example : >
-    "   command! -nargs=1 -complete=customlist,zlib#buf#complete_name J
-    "           \ call zlib#buf#goto(<q-args>)
+    "   command! -nargs=1 -complete=customlist,zl#buf#complete_name J
+    "           \ call zl#buf#goto(<q-args>)
     "--------- ------------------------------------------------
 
     if a:id =~# '\v(.*):(\d+)$'
@@ -126,12 +126,12 @@ endfunction
 " ============================================================================
 " Infomation:                                                             [[[1
 " ============================================================================
-function! zlib#buf#name_list() "                                          [[[2
+function! zl#buf#name_list() "                                          [[[2
     return map(filter(
                 \ range(1, bufnr('$')),
                 \ 'buflisted(v:val) && filereadable( bufname(v:val) )'
                 \),
-                \ 'zlib#path#smart_quote( bufname(v:val) )'
+                \ 'zl#path#smart_quote( bufname(v:val) )'
                 \)
 endfunction
 
@@ -141,7 +141,7 @@ endfunction
 " ============================================================================
 " Output:                                                                 [[[1
 " ============================================================================
-function! zlib#buf#redir(...) "                                           [[[2
+function! zl#buf#redir(...) "                                           [[[2
     "--------- ------------------------------------------------
     " Desc    : Redirect command output to buffer
     "
@@ -156,7 +156,7 @@ function! zlib#buf#redir(...) "                                           [[[2
     "
     " Example : >
     "   command! -nargs=* -complete=command Redir
-    "       \ call zlib#buf#redir(<q-args>)
+    "       \ call zl#buf#redir(<q-args>)
     "
     " Refer   :
     "   - genutils#GetVimCmdOutput
@@ -166,7 +166,7 @@ function! zlib#buf#redir(...) "                                           [[[2
     "--------- ------------------------------------------------
 
     let opts = {'cmd'         : ''
-            \ , 'split'       : zlib#window#nicely_split_cmd()
+            \ , 'split'       : zl#window#nicely_split_cmd()
             \ , 'alway_split' : 1
         \}
     if a:0 >= 1 && type(a:1) == type({})

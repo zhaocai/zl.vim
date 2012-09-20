@@ -2,9 +2,9 @@
 " Name           : regex.vim
 " Description    : vim library: Regular Expression
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Thu 20 Sep 2012 04:09:43 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:12 PM EDT
 " Tag            : [ vim, library, regex ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -20,7 +20,7 @@
 " ============================================================================
 " Escape:                                                                 [[[1
 " ============================================================================
-function! zlib#regex#escape(text, ...) " (text, ?magic='m')               [[[2
+function! zl#regex#escape(text, ...) " (text, ?magic='m')               [[[2
     "--------- ------------------------------------------------
     " Desc    : escape common special characters.
     "
@@ -32,7 +32,7 @@ function! zlib#regex#escape(text, ...) " (text, ?magic='m')               [[[2
     " Return  : escaped text
     " Raise   :
     "
-    " Example : echo zlib#regex#escape('I|||love&you\\\', 'v')
+    " Example : echo zl#regex#escape('I|||love&you\\\', 'v')
     "
     " Refer   :
     "--------- ------------------------------------------------
@@ -48,7 +48,7 @@ function! zlib#regex#escape(text, ...) " (text, ?magic='m')               [[[2
     elseif l:magic =~# '^\\\?v$'
         return substitute(a:text, '[^0-9a-zA-Z_]', '\\&', 'g')
     else
-        throw 'zlib: unsupported magic type'
+        throw 'zl: unsupported magic type'
         return a:text
     endif
 endfunction

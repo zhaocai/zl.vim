@@ -2,10 +2,10 @@
 " Name           : window.vim
 " Synopsis       : vim script library: window
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Wed 19 Sep 2012 06:31:58 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:17 PM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -15,7 +15,7 @@
 " ============================================================================
 " Load Guard:                                                             [[[1
 " ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
+if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
     finish
 endif
 
@@ -23,7 +23,7 @@ endif
 " ============================================================================
 " Status:                                                                 [[[1
 " ============================================================================
-function! zlib#window#is_last_visible(...)
+function! zl#window#is_last_visible(...)
     "--------- ------------------------------------------------
     " Desc    : check if no visible buffer left
     "
@@ -77,9 +77,9 @@ endfunction
 " Move:                                                                   [[[1
 " ============================================================================
 let s:golden_ratio = 1.618
-function! zlib#window#next_window_or_tab()
+function! zl#window#next_window_or_tab()
     if tabpagenr('$') == 1 && winnr('$') == 1
-        call zlib#window#split_nicely()
+        call zl#window#split_nicely()
     elseif winnr() < winnr("$")
         wincmd w
     else
@@ -88,7 +88,7 @@ function! zlib#window#next_window_or_tab()
     endif
 endfunction
 
-function! zlib#window#previous_window_or_tab()
+function! zl#window#previous_window_or_tab()
     if winnr() > 1
         wincmd W
     else
@@ -102,11 +102,11 @@ endfunction
 " ============================================================================
 " Size:                                                                   [[[1
 " ============================================================================
-function! zlib#window#golden_ratio_width()
+function! zl#window#golden_ratio_width()
     return &columns / s:golden_ratio
 endfunction
 
-function! zlib#window#golden_ratio_height()
+function! zl#window#golden_ratio_height()
     return &lines / s:golden_ratio
 endfunction
 
@@ -115,7 +115,7 @@ endfunction
 " Split:                                                                  [[[1
 " ============================================================================
 
-function! zlib#window#nicely_split_cmd(...)
+function! zl#window#nicely_split_cmd(...)
     let opts = {
                 \ 'winnr' : 0 ,
             \}
@@ -137,18 +137,18 @@ function! zlib#window#nicely_split_cmd(...)
     return 'split'
 endfunction
 
-function! zlib#window#split_nicely()
-    exec zlib#window#nicely_split_cmd()
+function! zl#window#split_nicely()
+    exec zl#window#nicely_split_cmd()
     wincmd p
 endfunction
 
-function! zlib#window#toggle_split()
+function! zl#window#toggle_split()
     let prev_name = winnr()
     silent! wincmd w
     if prev_name == winnr()
         split
     else
-        call zlib#buf#quit()
+        call zl#buf#quit()
     endif
 endfunction
 
@@ -157,7 +157,7 @@ endfunction
 " ============================================================================
 " Sort:                                                                   [[[1
 " ============================================================================
-function! zlib#window#sort_by(...)
+function! zl#window#sort_by(...)
     "--------- ------------------------------------------------
     " Desc    : sort buffer by size, height, or width
     "
@@ -210,7 +210,7 @@ function! zlib#window#sort_by(...)
                 \ })
     endfor
 
-    return zlib#list#sort_by(list,'v:val["'.opts['by'].'"]')
+    return zl#list#sort_by(list,'v:val["'.opts['by'].'"]')
 endfunction
 
 
@@ -218,7 +218,7 @@ endfunction
 " Switch:                                                                 [[[1
 " ============================================================================
 
-function! zlib#window#switch_buffer_toggle(...)
+function! zl#window#switch_buffer_toggle(...)
     "--------- ------------------------------------------------
     " Desc    : toggle buffer switch
     "
@@ -233,7 +233,7 @@ function! zlib#window#switch_buffer_toggle(...)
     "
     " Example : >
     "   nnoremap <silent> <C-@>
-    "   \ :<C-u>call zlib#window#switch_buffer_toggle()<CR>
+    "   \ :<C-u>call zl#window#switch_buffer_toggle()<CR>
     "--------- ------------------------------------------------
 
     let opts = {
@@ -246,13 +246,13 @@ function! zlib#window#switch_buffer_toggle(...)
     let bufnr = bufnr('%')
     if exists('b:switch_buffer')
             \ && bufwinnr(b:switch_buffer['bufnr']) == b:switch_buffer['winnr']
-        call zlib#window#switch_buffer(bufnr, b:switch_buffer['bufnr'])
+        call zl#window#switch_buffer(bufnr, b:switch_buffer['bufnr'])
     else
         try
-            let fn = 'zlib#window#switch_buffer_with_'.opts['with']
+            let fn = 'zl#window#switch_buffer_with_'.opts['with']
             exec 'call ' . fn . '()'
         catch /^Vim%((a+))=:E700/
-            throw "zlib: function " . fn . 'for ' . opts['with']
+            throw "zl: function " . fn . 'for ' . opts['with']
                 \ . ' is not implemented!'
         endtry
 
@@ -260,7 +260,7 @@ function! zlib#window#switch_buffer_toggle(...)
 endfunction
 
 
-function! zlib#window#switch_buffer_with_sorted_by_size_index(index, ...)
+function! zl#window#switch_buffer_with_sorted_by_size_index(index, ...)
     "--------- ------------------------------------------------
     " Desc    : switch buffer with the largest window
     "
@@ -279,7 +279,7 @@ function! zlib#window#switch_buffer_with_sorted_by_size_index(index, ...)
     "
     " Example : >
     "   nnoremap <silent> <C-@>
-    "   \ :<C-u>call zlib#window#switch_buffer_with_largest()<CR>
+    "   \ :<C-u>call zl#window#switch_buffer_with_largest()<CR>
     "--------- ------------------------------------------------
 
 
@@ -294,21 +294,21 @@ function! zlib#window#switch_buffer_with_sorted_by_size_index(index, ...)
         call extend(opts, a:1)
     endif
 
-    let sorted = zlib#window#sort_by(filter(copy(opts),'v:key != "bufnr"'))
+    let sorted = zl#window#sort_by(filter(copy(opts),'v:key != "bufnr"'))
     let bufnr_to = sorted[a:index]['bufnr']
-    call zlib#window#switch_buffer(opts['bufnr'], bufnr_to)
+    call zl#window#switch_buffer(opts['bufnr'], bufnr_to)
 endfunction
 
 
-function! zlib#window#switch_buffer_with_largest(...)
-    call zlib#window#switch_buffer_with_sorted_by_size_index(-1, a:000)
+function! zl#window#switch_buffer_with_largest(...)
+    call zl#window#switch_buffer_with_sorted_by_size_index(-1, a:000)
 endfunction
 
-function! zlib#window#switch_buffer_with_smallest(...)
-    call zlib#window#switch_buffer_with_sorted_by_size_index(0, a:000)
+function! zl#window#switch_buffer_with_smallest(...)
+    call zl#window#switch_buffer_with_sorted_by_size_index(0, a:000)
 endfunction
 
-function! zlib#window#switch_buffer(bufnr1, bufnr2)
+function! zl#window#switch_buffer(bufnr1, bufnr2)
     "--------- ------------------------------------------------
     " Desc    : switch buffer window if both are visible
     "
@@ -349,7 +349,7 @@ function! zlib#window#switch_buffer(bufnr1, bufnr2)
     endif
 endfunction
 
-function! zlib#window#alternate_buffer()
+function! zl#window#alternate_buffer()
     if bufnr('%') != bufnr('#') && buflisted(bufnr('#'))
         buffer #
     else
@@ -380,7 +380,7 @@ endfunction
 " Scroll:                                                                 [[[1
 " ============================================================================
 
-function! zlib#window#scroll_other_window(direction)
+function! zl#window#scroll_other_window(direction)
     execute 'wincmd' (winnr('#') == 0 ? 'w' : 'p')
     execute (a:direction ? "normal! \<C-d>" : "normal! \<C-u>")
     wincmd p

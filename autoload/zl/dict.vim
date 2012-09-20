@@ -2,9 +2,9 @@
 " Name           : dict.vim
 " Description    : vim library: Dictionary
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Wed 19 Sep 2012 06:48:28 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:08 PM EDT
 " Tag            : [ vim, library, Dictionary ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -20,7 +20,7 @@
 " ============================================================================
 " True Or False:                                                          [[[1
 " ============================================================================
-fun! zlib#dict#has_key_value(dict, key, val) "                            [[[2
+fun! zl#dict#has_key_value(dict, key, val) "                            [[[2
     if !has_key(a:dict,a:key)
         return 0
     endif

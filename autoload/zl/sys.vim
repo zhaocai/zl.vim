@@ -2,9 +2,9 @@
 " Name           : sys.vim
 " Description    : vim library
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Mon 03 Sep 2012 09:05:14 AM EDT
-" Last Modified  : Mon 03 Sep 2012 11:09:54 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:15 PM EDT
 " Tag            : [ vim, library ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -13,7 +13,7 @@
 " ============================================================================
 " Load Guard:                                                             [[[1
 " ============================================================================
-if !zlib#rc#load_guard('zlib_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
+if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
     finish
 endif
 
@@ -32,7 +32,7 @@ endif
 let s:os_type   = 'undefined'
 let s:is_cygwin = has('win32unix')
 
-function! zlib#sys#ostype() "                                             [[[2
+function! zl#sys#ostype() "                                             [[[2
     "--------- ------------------------------------------------
     " Args    :
     " Return  :
@@ -41,7 +41,7 @@ function! zlib#sys#ostype() "                                             [[[2
     " Raise   :
     "
     " Example : >
-    "   call zlib#rc#set_default('g:os_type', zlib#sys#ostype())
+    "   call zl#rc#set_default('g:os_type', zl#sys#ostype())
     "--------- ------------------------------------------------
     if s:os_type != 'undefined'
         return s:os_type
@@ -68,17 +68,17 @@ function! zlib#sys#ostype() "                                             [[[2
     return s:os_type
 endfunction
 
-function! zlib#sys#is_cygwin()"                                           [[[2
+function! zl#sys#is_cygwin()"                                           [[[2
     return s:is_cygwin
 endfunction
 
-function! zlib#sys#is_win() "                                             [[[2
+function! zl#sys#is_win() "                                             [[[2
     return s:os_type == 'Windows'
 endfunction
-function! zlib#sys#is_mac() "                                             [[[2
+function! zl#sys#is_mac() "                                             [[[2
     return s:os_type == 'Mac'
 endfunction
-function! zlib#sys#is_linux() "                                           [[[2
+function! zl#sys#is_linux() "                                           [[[2
     return s:os_type == 'Linux'
 endfunction
 

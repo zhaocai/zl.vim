@@ -2,10 +2,10 @@
 " Name           : list
 " Synopsis       : vim list library
 " Author         : Zhao Cai <caizhaoff@gmail.com>
-" HomePage       : https://github.com/zhaocai/zlib.vim
+" HomePage       : https://github.com/zhaocai/zl.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Wed 19 Sep 2012 07:27:19 PM EDT
+" Last Modified  : Thu 20 Sep 2012 04:25:10 PM EDT
 " Tag            : [ vim, list ]
 " Copyright      : (c) 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -17,7 +17,7 @@
 " Sort:                                                                   [[[1
 " ============================================================================
 
-function! zlib#list#unique_sort(list, ...) "                              [[[2
+function! zl#list#unique_sort(list, ...) "                              [[[2
     "--------- ------------------------------------------------
     " Args    : list, [func]
     " Return  : unique sorted list
@@ -48,7 +48,7 @@ endfunction
 
 
 
-function! zlib#list#sort_by(list, expr)
+function! zl#list#sort_by(list, expr)
     "--------- ------------------------------------------------
     " Desc    : sort list by expr
     "
@@ -58,13 +58,13 @@ function! zlib#list#sort_by(list, expr)
     "
     " Example : >
     "   let list = [{'a' : 1}, {'a' : 22}, {'a' : 3}]
-    "   echo zlib#list#sort_by(list, 'v:val["a"]')
+    "   echo zl#list#sort_by(list, 'v:val["a"]')
     "
     " Refer   : vital.vim
     "--------- ------------------------------------------------
 
     let pairs = map(a:list, printf('[v:val, %s]', a:expr))
-    return map(zlib#list#sort(pairs,
+    return map(zl#list#sort(pairs,
                 \ 'a:a[1] ==# a:b[1] ? 0 : a:a[1] ># a:b[1] ? 1 : -1'),
                 \ 'v:val[0]')
 endfunction
@@ -73,7 +73,7 @@ function! s:_compare(a, b)
     return eval(s:expr)
 endfunction
 
-function! zlib#list#sort(list, expr)
+function! zl#list#sort(list, expr)
     "--------- ------------------------------------------------
     " Desc    : sort list with expr to compare two values.
     "
@@ -92,7 +92,7 @@ function! zlib#list#sort(list, expr)
 endfunction
 
 
-function! zlib#list#uniq(list, ...)
+function! zl#list#uniq(list, ...)
     let list = a:0
              \ ? map(copy(a:list), printf('[v:val, %s]', a:1))
              \ : copy(a:list)
