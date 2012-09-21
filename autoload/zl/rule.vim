@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Fri 21 Sep 2012 05:03:27 PM EDT
+" Last Modified  : Fri 21 Sep 2012 06:08:00 PM EDT
 " Tag            : [ vim, rule ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -16,8 +16,8 @@
 " Rule:                                                                   [[[1
 " ============================================================================
 let s:rule_types =  [
-    \   'filetype' , 'mode' , 'bufname' ,
-    \   'syntax'   , 'expr' ,
+    \   'at'     , 'filetype', 'mode',
+    \   'bufname', 'syntax'  , 'expr',
     \ ]
 let s:nrule = {
     \ 'eval_order' : s:rule_types ,
@@ -94,7 +94,7 @@ function! zl#rule#norm(urule, ...)
         endif
     endfor
 
-    for type in ['mode']
+    for type in ['mode', 'at']
         if has_key(a:urule, type)
             let nrule.rule[type] = a:urule[type]
         endif
@@ -196,12 +196,17 @@ endfunction
 
 
 " nrule eval
-function! s:eval_filetype(rule, ...)
-    return call('s:_eval_match', ['filetype', a:rule] + a:000)
+function! s:eval_filetype(nrule, ...)
+    return call('s:_eval_match', ['filetype', a:nrule] + a:000)
 endfunction
 
-function! s:eval_bufname(rule, ...)
-    return call('s:_eval_match', ['bufname', a:rule] + a:000)
+function! s:eval_bufname(nrule, ...)
+    return call('s:_eval_match', ['bufname', a:nrule] + a:000)
+endfunction
+
+
+function! s:eval_at(nrule, ...)
+    return search(get(a:nrule, 'at', '\%#'), 'bcnW')
 endfunction
 
 
