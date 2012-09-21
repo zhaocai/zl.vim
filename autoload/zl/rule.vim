@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Fri 21 Sep 2012 06:08:00 PM EDT
+" Last Modified  : Fri 21 Sep 2012 06:44:02 PM EDT
 " Tag            : [ vim, rule ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -20,9 +20,10 @@ let s:rule_types =  [
     \   'bufname', 'syntax'  , 'expr',
     \ ]
 let s:nrule = {
-    \ 'eval_order' : s:rule_types ,
-    \ 'logic'      : 'or'         ,
-    \ 'rule'       : {}           ,
+    \ 'eval_order'  : s:rule_types ,
+    \ 'eval_negate' : []           ,
+    \ 'logic'       : 'or'         ,
+    \ 'rule'        : {}           ,
     \ }
 
 function! zl#rule#norm(urule, ...)
@@ -35,13 +36,14 @@ function! zl#rule#norm(urule, ...)
     "               optional items and internal items.
     "
     " Args    :
-    "   - urule: un-normalized rules
+    "   - urule: un-normalized rule
     "   - opts :
-    "     - eval_order : order in s:rule_types,
-    "     - logic      :
-    "       - or     : 'v:filetype || v:bufname || v:syntax || v:expr'
-    "       - and    : 'v:filetype && v:bufname && v:syntax && v:expr'
-    "       - string : similar to v:val for map()
+    "     - eval_order   : order in s:rule_types,
+    "     - eval_negate  : reverse eval result
+    "     - logic :
+    "       - {or}     : 'v:filetype || v:bufname || ...'
+    "       - {and}    : 'v:filetype && v:bufname && ...'
+    "       - {string} : similar to v:val for filter()
     "
     " Return  : normalized rules
     " Raise   :
@@ -143,6 +145,13 @@ endfunction
 
 
 " rule logic
+function! s:_return(nrule, type, ret)
+    return
+    \ index(a:nrule.eval_negate, a:type) >= 0
+    \ ? !a:ret
+    \ : a:ret
+endfunction
+
 function! zl#rule#logic_or(nrule, ...)
     let opts = {}
     if a:0 >= 1 && zl#var#is_dict(a:1)
@@ -150,7 +159,7 @@ function! zl#rule#logic_or(nrule, ...)
     endif
 
     for type in a:nrule['eval_order']
-        if s:eval_{type}(a:nrule['rule'], opts)
+        if s:_return(a:nrule, type, s:eval_{type}(a:nrule['rule'], opts))
             return 1
         endif
     endfor
@@ -164,7 +173,7 @@ function! zl#rule#logic_and(nrule, ...)
     endif
 
     for type in a:nrule['eval_order']
-        if !s:eval_{type}(a:nrule['rule'], opts)
+        if !s:_return(a:nrule, type, s:eval_{type}(a:nrule['rule'], opts))
             return 0
         endif
     endfor
@@ -181,7 +190,11 @@ function! zl#rule#logic_expr(nrule, ...)
     for type in a:nrule['eval_order']
         let str = substitute(str
                 \ , 'v:'.type
-                \ , string(s:eval_{type}(a:nrule['rule'], opts))
+                \ , string(
+                \     s:_return(a:nrule, type,
+                \       s:eval_{type}(a:nrule['rule'], opts)
+                \     )
+                \   )
                 \ , 'ge'
                 \ )
     endfor
