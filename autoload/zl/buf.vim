@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 20 Sep 2012 04:25:07 PM EDT
+" Last Modified  : Fri 28 Sep 2012 03:53:31 PM EDT
 " Tag            : [ vim, buffer ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -26,7 +26,7 @@ endif
 " ============================================================================
 " Completion:                                                             [[[1
 " ============================================================================
-function! zl#buf#complete_name(arglead, cmdline, cursorpos) "           [[[2
+function! zl#buf#complete_name(arglead, cmdline, cursorpos) "             [[[2
     let buffer_names = []
 
     for i in range( tabpagenr('$') )
@@ -74,7 +74,7 @@ endfunction
 " ============================================================================
 " Goto:                                                                   [[[1
 " ============================================================================
-function! zl#buf#goto(id)  " (buf_nr or partial_filename)               [[[2
+function! zl#buf#goto(id)  " (buf_nr or partial_filename)                 [[[2
     "--------- ------------------------------------------------
     " Desc    : goto buffer if visible, otherwise open
     "
@@ -126,13 +126,15 @@ endfunction
 " ============================================================================
 " Infomation:                                                             [[[1
 " ============================================================================
-function! zl#buf#name_list() "                                          [[[2
-    return map(filter(
-                \ range(1, bufnr('$')),
-                \ 'buflisted(v:val) && filereadable( bufname(v:val) )'
-                \),
-                \ 'zl#path#smart_quote( bufname(v:val) )'
-                \)
+function! zl#buf#name_list() "                                            [[[2
+    return
+    \ map(
+    \   filter(
+    \     range(1, bufnr('$')),
+    \     'buflisted(v:val) && filereadable( bufname(v:val) )'
+    \   ),
+    \   'zl#path#smart_quote( bufname(v:val) )'
+    \ )
 endfunction
 
 
@@ -141,7 +143,7 @@ endfunction
 " ============================================================================
 " Output:                                                                 [[[1
 " ============================================================================
-function! zl#buf#redir(...) "                                           [[[2
+function! zl#buf#redir(...) "                                             [[[2
     "--------- ------------------------------------------------
     " Desc    : Redirect command output to buffer
     "

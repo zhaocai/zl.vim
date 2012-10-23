@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Thu 30 Aug 2012 10:56:47 PM EDT
-" Last Modified  : Thu 20 Sep 2012 04:25:08 PM EDT
+" Last Modified  : Mon 15 Oct 2012 08:39:41 PM EDT
 " Tag            : [ vim, fold ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -17,7 +17,7 @@
 " Check Status:                                                           [[[1
 " ============================================================================
 
-function! zl#fold#has_fold() "                                          [[[2
+function! zl#fold#has_fold() "                                            [[[2
     "--------- ------------------------------------------------
     " Desc    : check if current file has fold!
     "
@@ -71,7 +71,7 @@ endfunction
 " Foldtext:                                                               [[[1
 " ============================================================================
 
-function! zl#fold#foldtext(...) "                                       [[[2
+function! zl#fold#foldtext(...) "                                         [[[2
     "--------- ------------------------------------------------
     " Desc    : foldtext func
     "
@@ -88,6 +88,7 @@ function! zl#fold#foldtext(...) "                                       [[[2
     " Return  : Aligned foldtext
     " Raise   :
     "
+    " Example : set foldtext=zl#fold#foldtext()
     "--------- ------------------------------------------------
 
     let opts = a:0 >= 1 && zl#var#is_dict(a:1) ?  a:1  :  {}
