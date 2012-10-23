@@ -5,7 +5,7 @@
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Version        : 0.1
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Thu 20 Sep 2012 04:25:17 PM EDT
+" Last Modified  : Tue 23 Oct 2012 04:59:06 PM EDT
 " Tag            : [ vim, syntax ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -386,6 +386,17 @@ function! zl#window#scroll_other_window(direction)
     wincmd p
 endfunction
 
+" ============================================================================
+" View:                                                                   [[[1
+" ============================================================================
+function! zl#window#save_view_command(command)
+    let view = winsaveview()
+    try
+        keepjumps execute a:command
+    finally
+        call winrestview(view)
+    endtry
+endf
 
 " ============================================================================
 " Modeline:                                                               [[[1
