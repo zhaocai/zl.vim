@@ -1,0 +1,76 @@
+"============== = ============================================================
+" FileName      : file.vim
+" Author        : Zhao Cai
+" Email         : caizhaoff@gmail.com
+" HomePage      :
+" Date Created  : Sat 03 Sep 2011 03:54:00 PM EDT
+" Last Modified : Sun 07 Oct 2012 07:10:35 PM EDT
+" Copyright     : (C) 2011 Zhao Cai
+"============== = ============================================================
+
+">=< Load Guard [[[1 =========================================================
+if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
+    finish
+endif
+
+">=< Settings [[[1 ===========================================================
+
+
+
+
+">=<  Completion [[[1 ========================================================
+function! zl#file#ft_complete(arglead, cmdline, cursorpos) "              [[[2
+    let ret = {}
+    for item in map(
+    \   split(globpath(&runtimepath, 'syntax/*.vim'), '\n'),
+    \   'fnamemodify(v:val, ":t:r")'
+    \ )
+        if !has_key(ret, item) && item =~ '^'.a:arglead
+            let ret[item] = 1
+        endif
+    endfor
+
+    return sort(keys(ret))
+endfunction
+
+">=<  Open / Close [[[1 ======================================================
+
+function! zl#file#open(filename) "                                        [[[2
+" Open a file/url
+    let filename = iconv(fnamemodify(a:filename, ':p'),
+                \ &encoding, &termencoding)
+
+    " Detect desktop environment.
+    if zl#sys#is_win() 
+        " For URI only.
+        silent execute '!start rundll32 url.dll,FileProtocolHandler' filename
+    elseif zl#sys#is_cygwin()
+        " Cygwin.
+        call system(printf('%s ''%s''', 'cygstart', filename))
+    elseif executable('xdg-open')
+        " Linux.
+        call system(printf('%s ''%s'' &', 'xdg-open', filename))
+    elseif exists('$KDE_FULL_SESSION') && $KDE_FULL_SESSION ==# 'true'
+        " KDE.
+        call system(printf('%s ''%s'' &', 'kioclien exec', filename))
+    elseif exists('$GNOME_DESKTOP_SESSION_ID')
+        " GNOME.
+        call system(printf('%s ''%s'' &', 'gnome-open', filename))
+    elseif executable('exo-open')
+        " Xfce.
+        call system(printf('%s ''%s'' &', 'exo-open', filename))
+    elseif zl#sys#is_mac() && executable('open')
+        " Mac OS.
+        call system(printf('%s ''%s'' &', 'open', filename))
+    else
+        " Give up.
+        throw 'Not supported.'
+    endif
+endfunction
+
+">=<  Open / Close [[[1 ======================================================
+
+
+
+"▲ Modeline ◀ [[[1 ===========================================================
+" vim: set ft=vim ts=4 sw=4 tw=78 fdm=marker fmr=[[[,]]] fdl=1 :
