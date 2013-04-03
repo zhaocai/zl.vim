@@ -4,7 +4,7 @@
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
-" Last Modified  : Fri 21 Sep 2012 06:44:02 PM EDT
+" Last Modified  : Sat 29 Sep 2012 01:03:24 AM EDT
 " Tag            : [ vim, rule ]
 " Copyright      : © 2012 by Zhao Cai,
 "                  Released under current GPL license.
@@ -15,6 +15,10 @@
 " ============================================================================
 " Rule:                                                                   [[[1
 " ============================================================================
+" [TODO]( add buftype ) @zhaocai @start(2012-09-28 18:38)
+" [TODO]( add cword type ) @zhaocai @start(2012-09-27 07:57)
+" add cword example to cword highlight
+" [TODO]( list for at type ) @zhaocai @start(2012-09-27 08:05)<`0`>
 let s:rule_types =  [
     \   'at'     , 'filetype', 'mode',
     \   'bufname', 'syntax'  , 'expr',
@@ -66,7 +70,7 @@ function! zl#rule#norm(urule, ...)
     let type_pat = {}
     for type in ['filetype', 'bufname', 'syntax']
         if has_key(a:urule, type)
-            let type_pat[type] = '\%(' . join(a:urule[type], '\|') . '\)'
+            let type_pat[type] = '^\%(' . join(a:urule[type], '\|') . '\)$'
         endif
     endfor
 
@@ -221,7 +225,6 @@ endfunction
 function! s:eval_at(nrule, ...)
     return search(get(a:nrule, 'at', '\%#'), 'bcnW')
 endfunction
-
 
 function! s:eval_mode(nrule, ...)
     let mode_pat  = get(a:nrule, 'mode', [])
