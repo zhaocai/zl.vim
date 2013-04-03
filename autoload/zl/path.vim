@@ -18,41 +18,136 @@ if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
 endif
 
 
-">=< Settings [[[1 ===========================================================
 
+" ============================================================================
+" Project Root Path:                                                      [[[1
+" ============================================================================
+
+function! s:calc_confidence(base_confidence, path)
+    return a:base_confidence * zl#path#level(a:path)
+endfunction
+
+" confidence on a scale of 1-10
 call zl#rc#set_default({
 \ 'g:zl_root_markers' : [
 \ {
-\    'dir' : ['.git', '.svn', '_darcs', '.hg', '.bzr', 'nbproject']
+\    'confidence' : 9,
+\    'dir'        : ['.git' ,'.svn' ,'_darcs' , '.hg' ,'.bzr' ,'nbproject']
 \ },
 \ {
-\    'file' : [ 'build.xml', 'prj.el', '.project', 'pom.xml', 'Makefile',
-\               'Gemfile'  , 'Guardfile', 'configure', 'Rakefile', 'NAnt.build'
-\             ]
+\    'confidence' : 7,
+\    'file'       : [
+\      'build.xml' , 'prj.el'    ,'.project'  ,'pom.xml'  , 'Makefile'   ,
+\      'Gemfile'   , 'Guardfile' ,'configure' ,'Rakefile' , 'NAnt.build'
+\    ]
 \ },
 \ {
-\    'file' : [ 'tags'  , 'gtags' ],
-\    'dir' : ['src', 'lib', 'bin', 'doc', 'include' ]
+\    'confidence' : 5        ,
+\    'file'       : [ 'tags' ,'gtags' ] ,
+\    'dir'        : [ 'src'  ,'lib'     ,'bin' , 'doc' ,'include' ]
 \ },
 \
 \ ]})
 
-call zl#rc#set_default("g:zl_scm_dirs",
-\ ['.git', '.svn' , '_darcs', '.hg', '.bzr'])
+function! zl#path#findup(type, namelist, path) "                          [[[2
+    if a:type == 'dir'
+        let Fn = function("finddir")
+    elseif a:type == 'file'
+        let Fn = function("findfile")
+    else
+        throw 'Wrong type to search:' . a:type
+    endif
 
-call zl#rc#set_default("g:zl_project_identifier_files",
-\ [
-\   'build.xml', 'prj.el', '.project', 'pom.xml', 'Makefile',
-\   'Gemfile'  , 'Guardfile',
-\   'configure', 'Rakefile', 'NAnt.build', 'tags', 'gtags'
-\ ]
-\)
+    let directories = []
+	for d in a:namelist
 
-call zl#rc#set_default("g:zl_project_identifier_dirs",
-\ ['src', 'lib', 'bin', 'doc', 'include' ] )
+		let d = Fn(d, a:path . ';')
+		if d != ''
+            if a:type == 'dir'
+                let d = fnamemodify(d, ':p:h:h')
+            elseif a:type == 'file'
+                let d = fnamemodify(d, ':p:h')
+            endif
+            call add(directories, d)
+		endif
+	endfor
+    return directories
+endfunction
+
+function! zl#path#find_project_root(...) "                                [[[2
+    let search_directory =  a:0 >= 1  ?  zl#path#2dir(a:1)  : expand("%:p:h")
+
+    if search_directory == ''
+        call zl#print#warning('empty or nonexisting path!')
+        return ''
+    endif
+
+    " Ignore remote/virtual filesystem like netrw, fugitive,...
+    if match(search_directory, '^\<.\+\>://.*') != -1
+        return search_directory
+    endif
+
+    let found = {}
+    for mark in g:zl_root_markers
+        let confidence = 6
+        for [k, v] in items(mark)
+            if k == 'confidence'
+                let confidence = v
+            elseif k == 'dir' || k == 'file'
+                let candidates = zl#path#findup(k, v, search_directory)
+            endif
+            unlet v " Fix E706: Variable type mismatch
+        endfor
+        if !empty(candidates)
+            let found[confidence] = candidates
+        endif
+    endfor
+
+    let most_possbile_found = search_directory
+    let most_possbile_confidence = 0
+
+    for [base_confidence, candidates] in items(found)
+        for c in candidates
+            let confidence = s:calc_confidence(base_confidence, c)
+            if confidence > most_possbile_confidence
+                let most_possbile_found = c
+            endif
+        endfor
+    endfor
+
+    return most_possbile_found
+endfunction
 
 
-">=< Path [[[1 ===============================================================
+function! zl#path#goto_project_root(...) "                                [[[2
+    let opts = {
+                \ 'path' : expand("%:p"),
+                \ 'cd'   : 'cd',
+                \}
+    if a:0 >= 1 && type(a:1) == type({})
+        call extend(opts, a:1)
+    endif
+
+    let root = zl#path#find_project_root(opts.path)
+    if &l:autochdir
+        setl noautochdir
+    endif
+    exec opts['cd'] . " " . zl#path#escape_file_search(root)
+    return root
+endfunction
+
+" ============================================================================
+" Utility:                                                                [[[1
+" ============================================================================
+
+let s:path_sep_char = (exists('+shellslash') ? '[\\/]' : '/')
+let s:path_sep_pattern = s:path_sep_char . '\+'
+
+" Convert all directory separators to "/".
+function! zl#path#unify_separator(path)
+    return substitute(a:path, s:path_sep_pattern, '/', 'g')
+endfunction
+
 function! zl#path#substitute_separator(path) "                            [[[2
     return zl#sys#is_win()
                 \ ? substitute(a:path, '\\', '/', 'g') : a:path
@@ -78,12 +173,7 @@ function! zl#path#smart_quote(path) "                                     [[[2
 endfunction
 
 function! zl#path#level(path) "                                           [[[2
-
-    let full_path = fnamemodify(a:path, ':p')
-
-    let l:parent = fnamemodify(a:path, ":p" . repeat(':h',a:level))
-
-    return zl#path#substitute_separator(strpart(l:full_path,len(l:parent)))
+    return zl#string#count(a:path, s:path_sep_char)
 endfunction
 
 function! zl#path#tail(path,level,...) "                                  [[[2
@@ -99,92 +189,6 @@ function! zl#path#tail(path,level,...) "                                  [[[2
 
     return zl#path#substitute_separator(strpart(l:full_path,len(l:parent)))
 endfunction
-
-function! zl#path#findup(type, namelist, path) "                          [[[2
-    if a:type == 'dir'
-        let Fn = function("finddir")
-    elseif a:type == 'file'
-        let Fn = function("findfile")
-    else
-        throw 'Wrong type to search:' . a:type
-    endif
-
-    let directories = []
-	for d in a:namelist
-		let d = Fn(d, zl#path#escape_file_search(a:path) . ';')
-		if d != ''
-            call add(directories, d)
-		endif
-	endfor
-    return map(directories, "fnamemodify(v:val, ':p:h')")
-endfunction
-
-function! s:most_possible_root(found)
-
-endfunction
-
-function! zl#path#find_project_root(...) "                                [[[2
-    " [TODO]( use confidence rating ) @zhaocai @start(2012-09-15 11:09)
-	let search_directory =  a:0 >= 1  ?  zl#path#2dir(a:1)  : expand("%:p:h")
-
-	if search_directory == ''
-		call zl#print#warning('empty or nonexisting path!')
-		return ''
-	endif
-
-	" Ignore remote/virtual filesystem like netrw, fugitive,...
-	if match(search_directory, '^\<.\+\>://.*') != -1
-		return search_directory
-	endif
-    
-    " let found = {}
-    " let i     = 1
-    " for m in values(g:zl_root_markers)
-    "     for [k, v] in items(m)
-    "         let found[i] = zl#path#findup(k, v, search_directory)
-    "         let i += 1
-    "     endfor
-    " endfor
-
-	" Search SCM directory.
-    let directories = zl#path#findup('file', g:zl_scm_dirs, search_directory)
-    if ! empty(directories)
-        return fnamemodify(sort(directories)[-1], ':p:h:h')
-    endif
-
-	" Search project identifier files
-    let directories = zl#path#findup('file', g:zl_project_identifier_files, search_directory)
-    if ! empty(directories)
-        return fnamemodify(sort(directories)[-1], ':p:h:h')
-    endif
-
-	" Search project identifier dirs
-    let directories = zl#path#findup('dir', g:zl_project_identifier_dirs, search_directory)
-    if ! empty(directories)
-        return fnamemodify(sort(directories)[-1], ':p:h:h')
-    endif
-
-    return ''
-endfunction
-
-
-function! zl#path#goto_project_root(...) "                                [[[2
-    let opts = {
-                \ 'path' : expand("%:p:h"),
-                \ 'cd'   : 'cd',
-                \}
-    if a:0 >= 1 && type(a:1) == type({})
-        call extend(opts, a:1)
-    endif
-
-    let root = zl#path#find_project_root(opts.path)
-    if &l:autochdir
-        setl noautochdir
-    endif
-    exec opts['cd'] . " " . zl#path#escape_file_search(root)
-    return root
-endfunction
-
 
 " ============================================================================
 " Modeline:                                                               [[[1
