@@ -18,7 +18,7 @@
 " Grep:                                                                   [[[1
 " ============================================================================
 
-function! zl#string#vimgrep(query,where)
+function! zl#find#vimgrep(query,where)
     " -------- - -----------------------------------------------
     "  Desc    : vimgrep the word pointed by the cursor
     "
