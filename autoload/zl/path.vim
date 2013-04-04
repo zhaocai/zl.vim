@@ -132,7 +132,7 @@ function! zl#path#goto_project_root(...) "                                [[[2
     if &l:autochdir
         setl noautochdir
     endif
-    exec opts['cd'] . " " . zl#path#escape_file_search(root)
+    exec opts['cd'] . " " . zl#path#search_escape(root)
     return root
 endfunction
 
@@ -160,7 +160,7 @@ function! zl#path#2dir(path) "                                            [[[2
                 \ )
 endfunction
 
-function! zl#path#escape_file_search(name) "                              [[[2
+function! zl#path#search_escape(name) "                              [[[2
     return escape(a:name, '*[]?{}, ')
 endfunction
 
