@@ -27,21 +27,20 @@ function! zl#find#vimgrep(query,where)
     "  Raise   :
     "
     "  Example : nnoremap vf :<C-U>
-    "					\call zl#string#vimgrep(expand("<cword>"),"%")<CR>
+    "					\call zl#find#vimgrep(expand("<cword>"),"%")<CR>
     "		     vnoremap <silent> vf :<C-U><CR>
     "					\gvy:
-    "                   \call zl#string#vimgrep(tlib#rx#Escape(@@),"%")<CR>
+    "                   \call zl#find#vimgrep(tlib#rx#Escape(@@),"%")<CR>
     "  Refer   :
     "  Note    : escape specail characters like #,% in the query argument
     " -------- - -----------------------------------------------
 
-    "	call Dfunc('zl#string#vimgrep('.a:query.' '.a:where.')')
+    "	call Dfunc('zl#find#vimgrep('.a:query.' '.a:where.')')
     let l:cmd = 'silent! vimgrep /'. a:query .'/ '.a:where
     exe l:cmd
     call zl#quickfix#open(0,1,1,64,l:cmd)
-    "	call Dret('zl#string#vimgrep')
+    "	call Dret('zl#find#vimgrep')
 endfunction
-
 
 
 

@@ -68,6 +68,18 @@ function! zl#buf#del(cmd)
     endif
 endfunction
 
+function! zl#buf#safe_quit_all()
+    for i in range(tabpagenr('$'))
+        let tabnr = i + 1
+        try
+            for nr in tabpagebuflist(tabnr)
+                silent! exec 'bdel ' . nr
+            endfor
+        catch /^Vim\%((\a\+)\)\=:E714/
+            " List Required when tabpagebuflist(tabnr) -> 0
+        endtry
+    endfor
+endfunction
 
 
 
