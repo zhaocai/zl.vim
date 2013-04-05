@@ -33,7 +33,7 @@ let s:ft_map = {
             \ '\.\%(snip\|snippet\)$'                      : 'snippet'  ,
             \ '\.\%(sh\|bash\)$'                           : 'sh'       ,
             \ '\.\%(zsh\)$'                                : 'zsh'      ,
-            \ '\.\%(rb\|gemspec\)$'                        : 'rb'       ,
+            \ '\.\%(rb\|gemspec\)$'                        : 'ruby'     ,
             \ '\.\%(markdown\|md\)$'                       : 'markdown' ,
             \ '\.\%(csv\)$'                                : 'csv'      ,
             \ '\.\%(pandoc\)$'                             : 'pandoc'   ,

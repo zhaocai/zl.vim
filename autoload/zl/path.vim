@@ -74,17 +74,17 @@ function! zl#path#findup(type, namelist, path) "                          [[[2
     return directories
 endfunction
 
-function! zl#path#find_project_root(...) "                                [[[2
+function! zl#path#project_root_candidates(...) "                                [[[2
     let search_directory =  a:0 >= 1  ?  zl#path#2dir(a:1)  : expand("%:p:h")
 
     if search_directory == ''
         call zl#print#warning('empty or nonexisting path!')
-        return ''
+        return {'most_possible' : '', 'candidates' : {}}
     endif
 
     " Ignore remote/virtual filesystem like netrw, fugitive,...
     if match(search_directory, '^\<.\+\>://.*') != -1
-        return search_directory
+        return {'most_possible' : search_directory, 'candidates' : {}}
     endif
 
     let found = {}
@@ -106,16 +106,25 @@ function! zl#path#find_project_root(...) "                                [[[2
     let most_possbile_found = search_directory
     let most_possbile_confidence = 0
 
+    let possible_candidates = {}
     for [base_confidence, candidates] in items(found)
         for c in candidates
             let confidence = s:calc_confidence(base_confidence, c)
+            let possible_candidates[c] = confidence
             if confidence > most_possbile_confidence
                 let most_possbile_found = c
+                let most_possbile_confidence = confidence
             endif
         endfor
     endfor
 
-    return most_possbile_found
+    return {'most_possible' : most_possbile_found, 'candidates' : possible_candidates}
+endfunction
+
+function! zl#path#find_project_root(...) "                                [[[2
+    let candidates = call('zl#path#project_root_candidates', a:000)
+
+    return candidates['most_possible']
 endfunction
 
 
