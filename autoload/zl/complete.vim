@@ -1,19 +1,15 @@
-"=============================================================================
-"     FileName: complete.vim
-"       Author: Zhao Cai
-"        Email: caizhaoff@gmail.com
-"     HomePage:
-" Date Created: Sat 24 Dec 2011 08:08:03 PM EST
-"Last Modified: Thu 20 Sep 2012 04:28:29 PM EDT
-"	 Copyright: (C) 2011 Zhao Cai
-"=============================================================================
-
-">=< Load Guard [[[1 =========================================================
-if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
-    finish
-endif
-
-">=< Settings [[[1 ===========================================================
+" =============== ============================================================
+" Name           : compete.vim
+" Synopsis       : complete helper
+" Author         : Zhao Cai <caizhaoff@gmail.com>
+" HomePage       : https://github.com/zhaocai/zl.vim
+" Version        : 0.1
+" Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
+" Last Modified  : Tue 09 Apr 2013 09:55:04 AM EDT
+" Tag            : [ vim, complete ]
+" Copyright      : © 2012 by Zhao Cai,
+"                  Released under current GPL license.
+" =============== ============================================================
 
 
 
@@ -21,8 +17,10 @@ endif
 
 
 
-">=< complete words [[[1 =====================================================
-function! zl#complete#get_prev_cur(cmdline) "                           [[[2
+" ============================================================================
+" Complete Words:                                                         [[[1
+" ============================================================================
+function! zl#complete#get_prev_cur(cmdline) "                             [[[2
     "--------- ----------------------------------------------------
     " Desc    : previous and current word for input() completion
     "
@@ -47,6 +45,8 @@ function! zl#complete#get_prev_cur(cmdline) "                           [[[2
     return [join(words[0:-2]), get(words, -1, "")]
 endfunction
 
+" ============================================================================
+" Modeline:                                                               [[[1
+" ============================================================================
+" vim: set ft=vim ts=4 sw=4 tw=78 fdm=syntax fmr=[[[,]]] fdl=1 :
 "
-"▲ Modeline ◀ [[[1 ===========================================================
-" vim: set ft=vim ts=4 sw=4 tw=78 fdm=marker fmr=[[[,]]] fdl=1 :

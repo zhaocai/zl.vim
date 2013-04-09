@@ -12,6 +12,7 @@
 
 
 if !has('python')
+    zl#print#error("some features require vim compiled with +python")
     finish
 endif
 

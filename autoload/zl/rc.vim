@@ -20,7 +20,7 @@ let s:ZL_VERSION_CURRENT = 110
 let s:VERSION_FACTOR = str2float('0.01')
 
 
-function! zl#rc#init() abort "                                          [[[2
+function! zl#rc#init() abort "                                            [[[2
 
     if v:version < 700
         echoerr "zl requires Vim >= 7"
@@ -48,7 +48,7 @@ endfunction
 
 
 
-function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)"[[[2
+function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)    "[[[2
     "--------- ------------------------------------------------
     " Desc    : gereric script load guard function
     "
@@ -122,7 +122,7 @@ function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)"[[[2
     return 1
 endfunction
 
-function! zl#rc#script_force_reload(...) " (script)                     [[[2
+function! zl#rc#script_force_reload(...) " (script)                       [[[2
     "--------- ------------------------------------------------
     " Desc    : Call to ignore zl#rc#load_guard() and source.
     "
@@ -163,7 +163,7 @@ endif
 " ============================================================================
 " Set Initialization Default Variables:                                   [[[1
 " ============================================================================
-function! zl#rc#set_default(var, ...) "  ('var', val) || ( {dict} )     [[[2
+function! zl#rc#set_default(var, ...) "  ('var', val) || ( {dict} )       [[[2
     "--------- ------------------------------------------------
     " Desc    : Set Initialization Default Variables
     "

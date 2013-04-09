@@ -10,7 +10,11 @@ created.
 
 ## How to use?
 
+## Highlight
 
+1. build sophisticated rules
+1. find project root with confidence
+1. optimized foldtext
 
 ## License
 
