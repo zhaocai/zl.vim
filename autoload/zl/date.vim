@@ -11,20 +11,16 @@
 "                  Released under current GPL license.
 " --------------- ------------------------------------------------------------
 
-">=< Load Guard [[[1 =========================================================
-if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp','has("perl")'])
-    finish
-endif
-let s:save_cpo = &cpo
-set cpo&vim
 
-">=< Convert [[[1 ============================================================
+" ============================================================================
+" Convert:                                                                [[[1
+" ============================================================================
 
-fun! zl#date#convert_format(date,format)"                           [[[2
+function! zl#date#convert_format(date,format)"                            [[[2
     return strftime(a:format,zl#date#2time(a:date))
-endf
+endfunction
 
-fun! zl#date#2time(date)"                                    [[[2
+function! zl#date#2time(date)"                                            [[[2
 perl << EOF
     use strict;
     use warnings FATAL => 'all';
@@ -35,13 +31,12 @@ perl << EOF
     VIM::DoCommand "let stdtime=". str2time($date);
 EOF
     return stdtime
-endf
+endfunction
 
 
 
-"▲ Modeline ◀ & cpo [[[1 =====================================================
-let &cpo = s:save_cpo
-unlet s:save_cpo
-
+" ============================================================================
+" Modeline:                                                               [[[1
+" ============================================================================
 " vim: set ft=vim ts=4 sw=4 tw=78 fdm=marker fmr=[[[,]]] fdl=1 :
 

@@ -1,6 +1,5 @@
 " =============== ============================================================
-" Name           : list
-" Synopsis       : vim list library
+" Synopsis       : list helper functions
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
 " Version        : 0.1
@@ -17,7 +16,7 @@
 " Sort:                                                                   [[[1
 " ============================================================================
 
-function! zl#list#unique_sort(list, ...) "                              [[[2
+function! zl#list#unique_sort(list, ...) "                                [[[2
     "--------- ------------------------------------------------
     " Args    : list, [func]
     " Return  : unique sorted list

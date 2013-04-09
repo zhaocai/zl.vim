@@ -1,20 +1,15 @@
-"=============================================================================
-"     FileName: diff.vim
-"       Author: Zhao Cai
-"        Email: caizhaoff@gmail.com
-"     HomePage:
-" Date Created: Sun 11 Sep 2011 05:18:00 PM EDT
-"Last Modified: Mon 25 Mar 2013 08:02:38 PM EDT
-"
-"	 Copyright: (C) 2010-2011 Zhao Cai
-"=============================================================================
+" =============== ============================================================
+" Synopsis       : vim script library: diff
+" Author         : Zhao Cai <caizhaoff@gmail.com>
+" HomePage       : https://github.com/zhaocai/zl.vim
+" Version        : 0.1
+" Date Created   : Sat 03 Sep 2011 03:54:00 PM EDT
+" Last Modified  : Fri 28 Sep 2012 03:53:31 PM EDT
+" Tag            : [ vim, buffer ]
+" Copyright      : © 2012 by Zhao Cai,
+"                  Released under current GPL license.
+" =============== ============================================================
 
-"===  Load Guard  ===                                                     [[[1
-if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 100, ['!&cp'])
-    finish
-endif
-let s:save_cpo = &cpo
-set cpo&vim
 
 call zl#rc#set_default({
         \ 'g:zl_diff_ignore_ft_pattern'   :   '\%(^$\|'
@@ -108,10 +103,7 @@ endf
 
 
 
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
-
-
-
-" vim: set ft=vim ts=4 sw=4 tw=78 fdm=marker fmr=[[[,]]] fdl=1 :
+" ============================================================================
+" Modeline:                                                               [[[1
+" ============================================================================
+" vim: set ft=vim ts=4 sw=4 tw=78 fdm=syntax fmr=[[[,]]] fdl=1 :
