@@ -11,11 +11,6 @@ created.
 ## How to use?
 
 
-## Author
-
-Zhao Cai
-
-
 
 ## License
 
