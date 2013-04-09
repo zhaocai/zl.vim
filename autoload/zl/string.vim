@@ -32,12 +32,16 @@ function! zl#string#count(haystack, needle)
     return counter
 endfunction
 
+function! zl#string#chop(str)
+    return substitute(a:str, '.$', '', '')
+endfunction
+
 function! zl#string#is_mbyte(str)
     return ( strdisplaywidth(a:str) != strlen(a:str) )
 endfunction
 
 
-function! zl#string#check_back_space()"                                   [[[2
+function! zl#string#check_back_space()
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
