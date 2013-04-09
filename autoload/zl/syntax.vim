@@ -112,6 +112,66 @@ function! s:zl_hl_cword_manual()
 endfunction
 
 
+" ============================================================================
+" Syntax Range:                                                           [[[1
+" ============================================================================
+
+function! zl#syntax#range_include( startPattern, endPattern, filetype, ... )
+    call zl#syntax#range_includeEx(
+    \   printf('%s keepend start="%s" end="%s" containedin=ALL',
+    \       (a:0 ? 'matchgroup=' . a:1 : ''),
+    \       a:startPattern,
+    \       a:endPattern
+    \   ),
+    \   a:filetype
+    \)
+endfunction
+function! zl#syntax#range_includeEx( regionDefinition, filetype )
+    let l:syntaxGroup = 'synInclude' . toupper(a:filetype[0]) . tolower(a:filetype[1:])
+
+    if exists('b:current_syntax')
+	let l:current_syntax = b:current_syntax
+	" Remove current syntax definition, as some syntax files (e.g. cpp.vim)
+	" do nothing if b:current_syntax is defined.
+	unlet b:current_syntax
+    endif
+
+    execute printf('syntax include @%s syntax/%s.vim', l:syntaxGroup, a:filetype)
+
+    if exists('l:current_syntax')
+	let b:current_syntax = l:current_syntax
+    else
+	unlet b:current_syntax
+    endif
+
+    execute printf('syntax region %s %s contains=@%s',
+    \   l:syntaxGroup,
+    \   a:regionDefinition,
+    \   l:syntaxGroup
+    \)
+endfunction
+
+
+function! zl#syntax#range_syntax_ignore( startLine, endLine )
+    if a:startLine == a:endLine
+	execute printf('syntax match synIgnoreLine /\%%%dl/', a:startLine)
+    elseif a:startLine < a:endLine && a:endLine == line('$')
+	execute printf('syntax match synIgnoreLine /\%%>%dl/', (a:startLine - 1))
+    else
+	execute printf('syntax match synIgnoreLine /\%%>%dl\%%<%dl/', (a:startLine - 1), (a:endLine + 1))
+    endif
+endfunction
+
+function! zl#syntax#range( startLine, endLine, filetype )
+    call zl#syntax#range_include(
+    \   printf('\%%%dl', a:startLine),
+    \   (a:startLine < a:endLine && a:endLine == line('$') ?
+    \       '\%$' :
+    \       printf('\%%%dl', (a:endLine + 1))
+    \   ),
+    \   a:filetype
+    \)
+endfunction
 
 
 
@@ -119,7 +179,7 @@ endfunction
 " ColorColumn:                                                            [[[1
 " ============================================================================
 
-function! zl#syntax#colorcolum() "                                      [[[2
+function! zl#syntax#colorcolum() "                                        [[[2
     "--------- ------------------------------------------------
     " Desc    : Toggle colorcolumn on and off
     "
@@ -153,13 +213,13 @@ endfunction
 " ============================================================================
 " Syntax Highlight Info:                                                  [[[1
 " ============================================================================
-function! zl#syntax#cursor_col(...) "                                   [[[2
+function! zl#syntax#cursor_col(...) "                                     [[[2
     let mode = a:0 >= 1 ? a:1 : mode()
     return(mode ==# 'i' ? col('.') - 1 : col('.'))
 endfunction
 
 
-function! zl#syntax#synstack_names(...) "                               [[[2
+function! zl#syntax#synstack_names(...) "                                 [[[2
     "--------- ------------------------------------------------
     " Desc    : Get actual syntax stack names of under cursor
     "
@@ -191,7 +251,7 @@ endfunction
 
 
 
-function! zl#syntax#cursor_hlgroup(...) "                               [[[2
+function! zl#syntax#cursor_hlgroup(...) "                                 [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax group name of under cursor
     "
@@ -217,7 +277,7 @@ function! zl#syntax#cursor_hlgroup(...) "                               [[[2
     return synIDattr(synID(opts['line'], opts['col'], 1), "name")
 endfunction
 
-function! zl#syntax#cursor_trans_hlgroup(...) "                         [[[2
+function! zl#syntax#cursor_trans_hlgroup(...) "                           [[[2
     "--------- ------------------------------------------------
     " Desc    : Get actual syntax group name of under cursor
     "
@@ -242,7 +302,7 @@ function! zl#syntax#cursor_trans_hlgroup(...) "                         [[[2
     return synIDattr(synIDtrans(synID(opts['line'], opts['col'], 1)), "name")
 endfunction
 
-function! zl#syntax#cursor_synid(...) "                                 [[[2
+function! zl#syntax#cursor_synid(...) "                                   [[[2
     "--------- ------------------------------------------------
     " Desc    : Get detailed syntax ID under cursor
     "
@@ -288,7 +348,7 @@ function! zl#syntax#cursor_synid(...) "                                 [[[2
     return synid
 endfunction
 
-function! zl#syntax#cursor_gui(...) "                                   [[[2
+function! zl#syntax#cursor_gui(...) "                                     [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax highlight style under cursor
     "
@@ -337,7 +397,7 @@ function! zl#syntax#cursor_gui(...) "                                   [[[2
     return gui
 endfunction
 
-function! zl#syntax#cursor_guifg(...) "                                 [[[2
+function! zl#syntax#cursor_guifg(...) "                                   [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax highlight guifg under cursor
     "
@@ -373,7 +433,7 @@ function! zl#syntax#cursor_guifg(...) "                                 [[[2
     return guifg
 endfunction
 
-function! zl#syntax#cursor_guibg(...) "                                 [[[2
+function! zl#syntax#cursor_guibg(...) "                                   [[[2
     "--------- ------------------------------------------------
     " Desc    : Get syntax highlight guibg under cursor
     "
@@ -409,7 +469,7 @@ function! zl#syntax#cursor_guibg(...) "                                 [[[2
     return guibg
 endfunction
 
-function! zl#syntax#cursor_hl(...) "                                    [[[2
+function! zl#syntax#cursor_hl(...) "                                      [[[2
     "--------- ------------------------------------------------
     " Desc    : Combined info of above syntax#cursor_* funcs
     "
@@ -440,7 +500,7 @@ function! zl#syntax#cursor_hl(...) "                                    [[[2
     return join(filter(info, "v:val != ''"), ' ')
 endfunction
 
-function! zl#syntax#cursor_hl_echo(...) "                               [[[2
+function! zl#syntax#cursor_hl_echo(...) "                                 [[[2
     "--------- ------------------------------------------------
     " Desc    : Echo zl#syntax#cursor_hl()
     "
