@@ -108,15 +108,15 @@ function! zl#word#cvar() "                                                [[[2
     "  Refer   :
     " -------- - -----------------------------------------------
 
-	let l:saved_isk = s:cvar_pre()
+	let l:saved_isk = zl#word#cvar_pre()
 
 	let l:cword =  expand("<cword>")
 
-	call s:cvar_post(l:saved_isk)
+	call zl#word#cvar_post(l:saved_isk)
 	return l:cword
 endfunction
 
-function! s:cvar_pre() "                                                  [[[2
+function! zl#word#cvar_pre() "                                                  [[[2
 	let l:saved_isk = &l:iskeyword
 	if &ft == 'vim'
 		setlocal iskeyword+=:,#,.,_
@@ -133,7 +133,7 @@ function! s:cvar_pre() "                                                  [[[2
 endfunction
 
 
-function! s:cvar_post(saved_isk) "                                        [[[2
+function! zl#word#cvar_post(saved_isk) "                                        [[[2
 	let &l:iskeyword = a:saved_isk
 endfunction
 

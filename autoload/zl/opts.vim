@@ -14,12 +14,71 @@
 
 
 
+" ============================================================================
+" Set Undo Vim Options:                                                   [[[1
+" ============================================================================
+let s:undo_options = {}
+
+function! zl#opts#undo_options()
+    return s:undo_options
+endfunction
+
+function! zl#opts#set(id, options)
+
+    "--------- ------------------------------------------------
+    " Desc    : set options and return undo command
+    "
+    " Args    :
+    "   - id      : unique id for zl#opts#undo(id)
+    "   - options : list of options to save , use '&l :'
+    "               prefix for local options
+    "
+    " Return  :
+    "
+    " Example : >
+
+    "     let options =
+    "     \ { '&foldcolumn' : 4
+    "     \ , '&foldlevel'  : 4
+    "     \ , '&guifont'    : 'Menlo for Powerline:h13'
+    "     \ }
+    "     call zl#opts#set('Some Option Profile', options)
+    "
+    "     " do something ...
+    "
+    "     call zl#opts#undo('Some Option Profile')
+    "--------- ------------------------------------------------
+
+    let saved_options = {}
+
+    for [key, val] in items(a:options)
+        let saved_options[key] = eval(key)
+        exec 'let ' . key . ' = val'
+    endfor
+    let s:undo_options[a:id] = saved_options
+endfunction
+
+
+function! zl#opts#undo(id)
+    if !has_key(s:undo_options, a:id)
+        zl#print#error('zl: undo option for key ' . a:id . ' was not set!')
+        return
+    endif
+    let saved_options = get(s:undo_options, a:id)
+
+    " global
+    for [key, val] in items(saved_options)
+        exec 'let ' . key . ' = val'
+    endfor
+
+    unlet s:undo_options[a:id]
+endfunction
 
 
 " ============================================================================
 " Parse Options:                                                          [[[1
 " ============================================================================
-function! zl#opts#parse(argline, option_list) "                              [[[2
+function! zl#opts#parse(argline, option_list) "                           [[[2
     "--------- ------------------------------------------------
     " Desc    : parse command line options
     "
@@ -32,7 +91,7 @@ function! zl#opts#parse(argline, option_list) "                              [[[
     " Example : >
     "   let argline = 'Cmd abc def -a -b -c=c_value -d'
     "   let opts = ['-a', '-b', '-c=']
-    "   let [args, options] = zl#util#parse_options(argline, opts)
+    "   let [args, options] = zl#util#parse_options(argline, options)
     "
     " Refer   : Unite.vim
     "--------- ------------------------------------------------
