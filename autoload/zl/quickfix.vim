@@ -122,16 +122,6 @@ func zl#quickfix#sort_uniq()
   call setqflist(l:uniq_list)
 endf
 
-":TODO: Wed Sep 14, 2011  08:25PM, zhaocai
-" quickfix filter duplicated file names
-"func zl#quickfix#shorten_path()
-	"let l:qflist = getqflist()
-	"let l:short_path_qflist = []
-	"for item in l:qflist
-		"call add(l:short_path_qflist, zl#shell#shorten_path(item))
-	"endfor
-	"call setqflist(l:short_path_qflist)
-"endf
 
 
 "===  BROWSER  ===                                                        [[[1
