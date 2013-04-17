@@ -214,8 +214,20 @@ endfunction
 " Syntax Highlight Info:                                                  [[[1
 " ============================================================================
 function! zl#syntax#cursor_col(...) "                                     [[[2
-    let mode = a:0 >= 1 ? a:1 : mode()
-    return(mode ==# 'i' ? col('.') - 1 : col('.'))
+    let opts = {
+                \ 'mode'  : mode(),
+                \}
+    if a:0 >= 1 && zl#var#is_dict(a:1)
+        call extend(opts, a:1)
+    endif
+
+    let col = col('.')
+
+    if opts['mode'] ==# 'i' && col > 1
+        return (col - 1)
+    else 
+        return col
+    endif
 endfunction
 
 

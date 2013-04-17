@@ -15,13 +15,12 @@
 " ============================================================================
 " Rule:                                                                   [[[1
 " ============================================================================
-" [TODO]( add buftype ) @zhaocai @start(2012-09-28 18:38)
-" [TODO]( add cword type ) @zhaocai @start(2012-09-27 07:57)
-" add cword example to cword highlight
-" [TODO]( list for at type ) @zhaocai @start(2012-09-27 08:05)<`0`>
+
+" [TODO]( list for at type ) @zhaocai @start(2012-09-27 08:05)
+
 let s:rule_types =  [
-    \   'at'     , 'filetype', 'mode',
-    \   'bufname', 'syntax'  , 'expr',
+    \   'filetype', 'buftype', 'mode'  , 'cword',
+    \   'bufname' , 'at'     , 'syntax', 'expr' ,
     \ ]
 let s:nrule = {
     \ 'eval_order'  : s:rule_types ,
@@ -63,14 +62,23 @@ function! zl#rule#norm(urule, ...)
     endif
 
     let type_expr = {
-                  \   'filetype' : '&ft'          ,
-                  \   'bufname'  : "bufname('%')" ,
+                  \   'buftype'  : '&buftype'          , 
+                  \   'filetype' : '&ft'               , 
+                  \   'bufname'  : "bufname('%')"      , 
+                  \   'cword'    : "expand('<cword>')" , 
                   \ }
 
     let type_pat = {}
-    for type in ['filetype', 'bufname', 'syntax']
+    for type in ['filetype', 'buftype', 'syntax']
         if has_key(a:urule, type)
             let type_pat[type] = '^\%(' . join(a:urule[type], '\|') . '\)$'
+        endif
+    endfor
+    for type in ['bufname', 'cword']
+        if has_key(a:urule, type)
+            let type_pat[type] = '^\%('
+            \ . join(map(a:urule[type], 'zl#regex#escape(v:val)'), '\|')
+            \ . '\)$'
         endif
     endfor
 
@@ -82,7 +90,7 @@ function! zl#rule#norm(urule, ...)
         endif
     endfor
 
-    for type in ['filetype', 'bufname']
+    for type in ['filetype', 'buftype', 'bufname', 'cword']
         if has_key(a:urule, type)
             let nrule.rule[type] =
                 \ {
@@ -215,6 +223,14 @@ endfunction
 " nrule eval
 function! s:eval_filetype(nrule, ...)
     return call('s:_eval_match', ['filetype', a:nrule] + a:000)
+endfunction
+
+function! s:eval_cword(nrule, ...)
+    return call('s:_eval_match', ['cword', a:nrule] + a:000)
+endfunction
+
+function! s:eval_buftype(nrule, ...)
+    return call('s:_eval_match', ['buftype', a:nrule] + a:000)
 endfunction
 
 function! s:eval_bufname(nrule, ...)

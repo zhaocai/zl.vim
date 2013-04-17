@@ -1,5 +1,4 @@
 " =============== ============================================================
-" Name           : rc.vim
 " Description    : vim script library
 " Author         : Zhao Cai <caizhaoff@gmail.com>
 " HomePage       : https://github.com/zhaocai/zl.vim
@@ -23,7 +22,7 @@ let s:VERSION_FACTOR = str2float('0.01')
 function! zl#rc#init() abort "                                            [[[2
 
     if v:version < 700
-        echoerr "zl requires Vim >= 7"
+        echoerr "zl.vim: requires Vim >= 7"
         return
     endif
 
@@ -34,7 +33,6 @@ function! zl#rc#init() abort "                                            [[[2
     if !exists("g:zl_debug_mode")
         let g:zl_debug_mode = 0
     endif
-
 
     let g:loaded_zl = s:ZL_VERSION_CURRENT * s:VERSION_FACTOR
 
