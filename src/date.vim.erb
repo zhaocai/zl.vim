@@ -16,11 +16,11 @@
 " Convert:                                                                [[[1
 " ============================================================================
 
-function! zl#date#convert_format(date,format)"                            [[[2
-    return strftime(a:format,zl#date#2time(a:date))
+function! <%=zl%>#date#convert_format(date,format)"                            [[[2
+    return strftime(a:format,<%=zl%>#date#2time(a:date))
 endfunction
 
-function! zl#date#2time(date)"                                            [[[2
+function! <%=zl%>#date#2time(date)"                                            [[[2
 perl << EOF
     use strict;
     use warnings FATAL => 'all';

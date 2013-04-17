@@ -16,16 +16,16 @@
 
 
 "---  FUNCTION  --------------------------------------------------------------
-" Function: zl#quickfix#is_open                                           [[[2
+" Function: <%=zl%>#quickfix#is_open                                           [[[2
 "     Desc:
 " Argument: None
 "   Return: non-zero if quickfix window is opened.
 "
-"  Example: if zl#quickfix#is_open()
+"  Example: if <%=zl%>#quickfix#is_open()
 "				...
 "			endif
 
-func zl#quickfix#is_open()
+func <%=zl%>#quickfix#is_open()
   return count(map(range(1, winnr('$')), 'getwinvar(v:val, "&buftype")'),
 			  \'quickfix'
 			  \) > 0
@@ -34,7 +34,7 @@ endf
 
 "---  FUNCTION  --------------------------------------------------------------
 " [TODO]( use opts dict args, 0,1,2,64 are vague ) @zhaocai @start(2013-04-03 01:05)
-" Function: zl#quickfix#open                                              [[[2
+" Function: <%=zl%>#quickfix#open                                              [[[2
 "     Desc: Open quixkfix window with various options as below:
 "
 " Argument: a:is_empty_open: if opening empty quickfix window
@@ -47,9 +47,9 @@ endf
 "			a:min_width: resize quickfix windows if its width is less than
 "			min_width
 "
-"  Example: call zl#quickfix#open(0,1,1,64)
+"  Example: call <%=zl%>#quickfix#open(0,1,1,64)
 
-func zl#quickfix#open(is_empty_open, is_noerror_open,
+func <%=zl%>#quickfix#open(is_empty_open, is_noerror_open,
 			\is_hold_cursor, min_width,...)
 	let l:title =  a:0 >= 1  ?  a:1  :  ''
 
@@ -87,7 +87,7 @@ endf
 
 
 "===  FILTER  ===                                                         [[[1
-func zl#quickfix#compare_entries(e0, e1)
+func <%=zl%>#quickfix#compare_entries(e0, e1)
   if a:e0.bufnr != a:e1.bufnr
     let i0 = bufname(a:e0.bufnr)
     let i1 = bufname(a:e1.bufnr)
@@ -104,12 +104,12 @@ func zl#quickfix#compare_entries(e0, e1)
 endf
 
 
-func zl#quickfix#sort()
-  call setqflist(sort(getqflist(), 'zl#quickfix#compare_entries'), 'r')
+func <%=zl%>#quickfix#sort()
+  call setqflist(sort(getqflist(), '<%=zl%>#quickfix#compare_entries'), 'r')
 endf
 
-func zl#quickfix#sort_uniq()
-  let l:sort_list = sort(getqflist(), 'zl#quickfix#compare_entries')
+func <%=zl%>#quickfix#sort_uniq()
+  let l:sort_list = sort(getqflist(), '<%=zl%>#quickfix#compare_entries')
   let l:uniq_list = []
   let last = ''
   for item in l:sort_list
@@ -127,7 +127,7 @@ endf
 "===  BROWSER  ===                                                        [[[1
 
 "---  FUNCTION  --------------------------------------------------------------
-" Function: zl#quickfix#circulate                                         [[[2
+" Function: <%=zl%>#quickfix#circulate                                         [[[2
 "     Desc: circulate :cnext and :cp
 "           when hit :cn the bottom, instead of stopping and giving error
 "           message, :cfirst and continue.
@@ -135,8 +135,8 @@ endf
 "   Return:
 "
 "  Example:
-"       command! -nargs=0 -bang QFnext call zl#quickfix#circulate('<bang>','next')
-"       command! -nargs=0 -bang QFprev call zl#quickfix#circulate('<bang>','prev')
+"       command! -nargs=0 -bang QFnext call <%=zl%>#quickfix#circulate('<bang>','next')
+"       command! -nargs=0 -bang QFprev call <%=zl%>#quickfix#circulate('<bang>','prev')
 
 "       noremap 99 :QFprev<CR>
 "       noremap 00 :QFnext<CR>
@@ -147,7 +147,7 @@ let s:qf_cmd_pair = {
             \   'prev'	: ['cp','clast'],
             \}
 
-func zl#quickfix#circulate(bang,direction)
+func <%=zl%>#quickfix#circulate(bang,direction)
     let pair = get(s:qf_cmd_pair, a:direction, ['cn','cfirst'])
     let _shortmess = &shortmess
     try

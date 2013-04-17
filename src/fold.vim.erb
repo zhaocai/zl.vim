@@ -17,7 +17,7 @@
 " Check Status:                                                           [[[1
 " ============================================================================
 
-function! zl#fold#has_fold() "                                            [[[2
+function! <%=zl%>#fold#has_fold() "                                            [[[2
     "--------- ------------------------------------------------
     " Desc    : check if current file has fold!
     "
@@ -42,7 +42,7 @@ function! zl#fold#has_fold() "                                            [[[2
              \ 'end_line'   : last_line      ,
              \ 'mode'       : 'random_check' ,
              \ }
-    if a:0 >= 1 && zl#var#is_dict(a:1)
+    if a:0 >= 1 && <%=zl%>#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -50,7 +50,7 @@ function! zl#fold#has_fold() "                                            [[[2
     if opts['mode'] == 'random_check'
         let times = last_line > 9 ? 9 : last_line
         while times > 0
-            call add(check_lines, float2nr(zl#math#rand()*last_line))
+            call add(check_lines, float2nr(<%=zl%>#math#rand()*last_line))
             let times -= 1
         endwhile
     else
@@ -71,7 +71,7 @@ endfunction
 " Foldtext:                                                               [[[1
 " ============================================================================
 
-function! zl#fold#foldtext(...) "                                         [[[2
+function! <%=zl%>#fold#foldtext(...) "                                         [[[2
     "--------- ------------------------------------------------
     " Desc    : foldtext func
     "
@@ -88,10 +88,10 @@ function! zl#fold#foldtext(...) "                                         [[[2
     " Return  : Aligned foldtext
     " Raise   :
     "
-    " Example : set foldtext=zl#fold#foldtext()
+    " Example : set foldtext=<%=zl%>#fold#foldtext()
     "--------- ------------------------------------------------
 
-    let opts = a:0 >= 1 && zl#var#is_dict(a:1) ?  a:1  :  {}
+    let opts = a:0 >= 1 && <%=zl%>#var#is_dict(a:1) ?  a:1  :  {}
 
     " process options
     " ---------------

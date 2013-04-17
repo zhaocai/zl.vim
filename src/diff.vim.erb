@@ -11,19 +11,19 @@
 " =============== ============================================================
 
 
-call zl#rc#set_default({
-        \ 'g:zl_diff_ignore_ft_pattern'   :   '\%(^$\|'
+call <%=zl%>#rc#set_default({
+        \ 'g:<%=zu%>_diff_ignore_ft_pattern'   :   '\%(^$\|'
             \.'man\|voomtree\|voomlog\|help\|qf\|'
             \.'qfreplace\|Decho\|ref\|simpletap-summary\|'
             \.'vimcalc\|unite\|vimfiler\|vimshell\|'
             \.'git-status\|git-log\|gitcommit\|vcs-commit\|vcs-status'
             \.'\)'
         \ ,
-        \ 'g:zl_diff_ignore_fname_pattern' :   '\.\%(o\|exe\|dll\|sw[po]\)$'
+        \ 'g:<%=zu%>_diff_ignore_fname_pattern' :   '\.\%(o\|exe\|dll\|sw[po]\)$'
         \ ,
     \})
 
-fun! zl#diff#toggle(...)
+fun! <%=zl%>#diff#toggle(...)
     let opts = {
                 \ 'buf'    : bufnr('%'),
                 \ 'toggle' : 'toggle'
@@ -38,8 +38,8 @@ fun! zl#diff#toggle(...)
     " --------%>--------
     if opts['toggle'] == 'toggle'
 
-        if &ft =~# g:zl_diff_ignore_ft_pattern
-                 \ || fnamemodify(expand('%'), ':p') =~ g:zl_diff_ignore_fname_pattern
+        if &ft =~# g:<%=zu%>_diff_ignore_ft_pattern
+                 \ || fnamemodify(expand('%'), ':p') =~ g:<%=zu%>_diff_ignore_fname_pattern
 
             return 0
         endif
@@ -53,8 +53,8 @@ fun! zl#diff#toggle(...)
             diffoff
         endif
     elseif opts['toggle'] == 'on'
-        if &ft =~# g:zl_diff_ignore_ft_pattern
-                 \ || fnamemodify(expand('%'), ':p') =~ g:zl_diff_ignore_fname_pattern
+        if &ft =~# g:<%=zu%>_diff_ignore_ft_pattern
+                 \ || fnamemodify(expand('%'), ':p') =~ g:<%=zu%>_diff_ignore_fname_pattern
 
             return 0
         endif
@@ -70,7 +70,7 @@ fun! zl#diff#toggle(...)
 endf
 
 
-fun! zl#diff#tab(...)
+fun! <%=zl%>#diff#tab(...)
     let opts = {
                 \ 'toggle' : 'toggle'
             \}
@@ -90,7 +90,7 @@ fun! zl#diff#tab(...)
 
     for nr in tabpagebuflist()
         let opts['buf'] = nr
-        call zl#diff#toggle(opts)
+        call <%=zl%>#diff#toggle(opts)
     endfor
     " --------%<--------
 endf

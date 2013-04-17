@@ -16,7 +16,7 @@
 " Utility:                                                                   [[[1
 " ============================================================================
 
-function! zl#string#count(haystack, needle)
+function! <%=zl%>#string#count(haystack, needle)
     let counter = 0
     let index = stridx(a:haystack, a:needle)
     while index != -1
@@ -26,23 +26,23 @@ function! zl#string#count(haystack, needle)
     return counter
 endfunction
 
-function! zl#string#chop(str)
+function! <%=zl%>#string#chop(str)
     return substitute(a:str, '.$', '', '')
 endfunction
 
-function! zl#string#is_mbyte(str)
+function! <%=zl%>#string#is_mbyte(str)
     return ( strdisplaywidth(a:str) != strlen(a:str) )
 endfunction
 
 
-function! zl#string#check_back_space()
+function! <%=zl%>#string#check_back_space()
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
 
 
-function! zl#string#count_first_nonwhite(text)
+function! <%=zl%>#string#count_first_nonwhite(text)
     let first_sym = matchstr(a:text, '\S')
     return len(matchstr(a:text, first_sym.'\+'))
 endfunction

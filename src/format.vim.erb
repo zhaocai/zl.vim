@@ -12,7 +12,7 @@
 
 
 
-function! zl#format#append_modeline()
+function! <%=zl%>#format#append_modeline()
     " -------- - -----------------------------------------------
     "  Desc    : append modeline in the end of the file
     "
@@ -20,7 +20,7 @@ function! zl#format#append_modeline()
     "  Return  : Returns
     "  Raise   :
     "
-    "  Example : > nnoremap <Leader>ml :call zl#format#append_modeline()<CR>
+    "  Example : > nnoremap <Leader>ml :call <%=zl%>#format#append_modeline()<CR>
     "
     "  Refer   : Use substitute() instead of printf() to handle
     "            '%%s' modeline in LaTeX files.

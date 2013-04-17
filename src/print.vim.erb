@@ -18,7 +18,7 @@
 " Echo Message:                                                           [[[1
 " ============================================================================
 
-function! zl#print#echomsg(message, ...)
+function! <%=zl%>#print#echomsg(message, ...)
     "--------- ------------------------------------------------
     " Desc    : echomsg wrapper
     "
@@ -47,14 +47,14 @@ function! zl#print#echomsg(message, ...)
     echohl NONE
 endfunction
 
-function! zl#print#warning(message)
-    call zl#print#echomsg(a:message, {'hl':'WarningMsg'})
+function! <%=zl%>#print#warning(message)
+    call <%=zl%>#print#echomsg(a:message, {'hl':'WarningMsg'})
 endfunction
-function! zl#print#error(message)
-    call zl#print#echomsg(a:message, {'hl':'ErrorMsg'})
+function! <%=zl%>#print#error(message)
+    call <%=zl%>#print#echomsg(a:message, {'hl':'ErrorMsg'})
 endfunction
-function! zl#print#moremsg(message)
-    call zl#print#echomsg(a:message, {'hl':'MoreMsg'})
+function! <%=zl%>#print#moremsg(message)
+    call <%=zl%>#print#echomsg(a:message, {'hl':'MoreMsg'})
 endfunction
 
 

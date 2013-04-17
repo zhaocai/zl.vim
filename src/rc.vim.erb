@@ -9,51 +9,45 @@
 "                  Released under current GPL license.
 " =============== ============================================================
 
-
 " ============================================================================
 " Initialization:                                                         [[[1
 " ============================================================================
 
-let s:ZL_VERSION_CURRENT = 110
+let s:<%=zu.upcase%>_VERSION_CURRENT = <%=version%>
 
 let s:VERSION_FACTOR = str2float('0.01')
 
 
-function! zl#rc#init() abort "                                            [[[2
+function! <%=zl%>#rc#init() abort "                                            [[[2
 
     if v:version < 700
         echoerr "zl.vim: requires Vim >= 7"
         return
     endif
 
-    if !exists("g:zl_force_reload")
-        let g:zl_force_reload = 0
+    if !exists("g:<%=zu%>_force_reload")
+        let g:<%=zu%>_force_reload = 0
     endif
 
-    if !exists("g:zl_debug_mode")
-        let g:zl_debug_mode = 0
+    if !exists("g:<%=zu%>_debug_mode")
+        let g:<%=zu%>_debug_mode = 0
     endif
 
-    let g:loaded_zl = s:ZL_VERSION_CURRENT * s:VERSION_FACTOR
+    let g:loaded_<%=zu%> = s:<%=zu.upcase%>_VERSION_CURRENT * s:VERSION_FACTOR
 
-
-    " Public Interface
-    " ----------------
-    command! -nargs=0 ZreloadScript  call zl#rc#script_force_reload()
-    command! -nargs=0 ZhlCwordToggle call zl#syntax#hl_cword_toggle()
 
 endfunction
 
 
 
-function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)    "[[[2
+function! <%=zl%>#rc#load_guard(prefix, vim_version, <%=zu%>_version,exprs,...)    "[[[2
     "--------- ------------------------------------------------
     " Desc    : gereric script load guard function
     "
     " Args    :
     "   - prefix       : to generate loaded_var_name
     "   - vim_version  : minmium vim version requirement
-    "   - zl_version : minmium zl.vim version requirement.
+    "   - <%=zu%>_version : minmium zl.vim version requirement.
     "                    set 0 to ignore.
     "   - exprs        : assert list of expresses to be true
     "   - ... scope    : 'g' , 'b', ...
@@ -65,7 +59,7 @@ function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)    "[[[2
     " Raise   :
     "
     " Example : >
-    "   if !zl#rc#load_guard(expand('<sfile>:t:r'), 702, 100, ['!&cp'])
+    "   if !<%=zl%>#rc#load_guard(expand('<sfile>:t:r'), 702, 100, ['!&cp'])
     "       finish
     "   endif
     "
@@ -78,7 +72,7 @@ function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)    "[[[2
     " Refer   :
     "--------- ------------------------------------------------
 
-"   call Dfunc('zl#rc#load_guard(' . a:prefix .' '. a:vim_version .' '. a:zl_version .' '. join(a:exprs))
+"   call Dfunc('<%=zl%>#rc#load_guard(' . a:prefix .' '. a:vim_version .' '. a:<%=zu%>_version .' '. join(a:exprs))
 
     let l:scope =  a:0 >= 1  ?  a:1  :  'g'
 
@@ -86,9 +80,9 @@ function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)    "[[[2
                 \ . substitute(a:prefix, '[^0-9a-zA-Z_]', '_', 'g')
 "    call Decho("loaded_var_name: " . l:loaded_var_name)
 
-    if exists(l:loaded_var_name) && g:zl_force_reload == 0
+    if exists(l:loaded_var_name) && g:<%=zu%>_force_reload == 0
 "       call Decho(l:loaded_var_name . ' loaded: return 0')
-"       call Dret('zl#rc#load_guard')
+"       call Dret('<%=zl%>#rc#load_guard')
         return 0
     endif
 
@@ -96,33 +90,33 @@ function! zl#rc#load_guard(prefix, vim_version, zl_version,exprs,...)    "[[[2
         echoerr l:loaded_var_name . ' requires Vim version '
                     \ . string(a:vim_version * s:VERSION_FACTOR)
         return 0
-    elseif a:zl_version > 0
+    elseif a:<%=zu%>_version > 0
         if !exists("g:loaded_zl")
             echoerr 'zl is required but not loaded'
             return 0
         endif
 
-        if (a:zl_version > s:ZL_VERSION_CURRENT)
+        if (a:<%=zu%>_version > s:<%=zu.upcase%>_VERSION_CURRENT)
             echoerr l:loaded_var_name . ' requires zl library version '
-                        \ . string(a:zl_version * s:VERSION_FACTOR)
+                        \ . string(a:<%=zu%>_version * s:VERSION_FACTOR)
             return 0
         endif
     endif
     for expr in a:exprs
         if !eval(expr)
             echoerr l:loaded_var_name . ' requires: ' . expr
-"           call Dret('zl#rc#load_guard')
+"           call Dret('<%=zl%>#rc#load_guard')
             return 0
         endif
     endfor
     let {l:loaded_var_name} = 1
-"   call Dret('zl#rc#load_guard')
+"   call Dret('<%=zl%>#rc#load_guard')
     return 1
 endfunction
 
-function! zl#rc#script_force_reload(...) " (script)                       [[[2
+function! <%=zl%>#rc#script_force_reload(...) " (script)                       [[[2
     "--------- ------------------------------------------------
-    " Desc    : Call to ignore zl#rc#load_guard() and source.
+    " Desc    : Call to ignore <%=zl%>#rc#load_guard() and source.
     "
     " Args    : script path or current script by default
     " Return  :
@@ -131,25 +125,16 @@ function! zl#rc#script_force_reload(...) " (script)                       [[[2
     "--------- ------------------------------------------------
     let script = a:0 >= 1 ? a:1 : '%'
 
-    let l:saved = g:zl_force_reload
-    let g:zl_force_reload = 1
+    let l:saved = g:<%=zu%>_force_reload
+    let g:<%=zu%>_force_reload = 1
 
     exec "so " . script
 
-    let g:zl_force_reload = l:saved
+    let g:<%=zu%>_force_reload = l:saved
 endfunction
 
 
 
-
-
-" ============================================================================
-" Load Guard:                                                             [[[1
-" ============================================================================
-
-if !zl#rc#load_guard('zl_' . expand('<sfile>:t:r'), 700, 0, ['!&cp'])
-    finish
-endif
 
 
 
@@ -161,7 +146,7 @@ endif
 " ============================================================================
 " Set Initialization Default Variables:                                   [[[1
 " ============================================================================
-function! zl#rc#set_default(var, ...) "  ('var', val) || ( {dict} )       [[[2
+function! <%=zl%>#rc#set_default(var, ...) "  ('var', val) || ( {dict} )       [[[2
     "--------- ------------------------------------------------
     " Desc    : Set Initialization Default Variables
     "
@@ -173,7 +158,7 @@ function! zl#rc#set_default(var, ...) "  ('var', val) || ( {dict} )       [[[2
     "           this rc.vim script bur your script
     "
     " Example : >
-    "   call zl#rc#set_default({
+    "   call <%=zl%>#rc#set_default({
     "             \ 'g:xxx_yyy'    : {
     "             \     'abc'        : 1,
     "             \ }

@@ -29,7 +29,7 @@ let s:nrule = {
     \ 'rule'        : {}           ,
     \ }
 
-function! zl#rule#norm(urule, ...)
+function! <%=zl%>#rule#norm(urule, ...)
     "--------- ------------------------------------------------
     " Desc    : normalize rules
     "
@@ -57,7 +57,7 @@ function! zl#rule#norm(urule, ...)
     "--------- ------------------------------------------------
     let nrule = deepcopy(s:nrule)
 
-    if a:0 >= 1 && zl#var#is_dict(a:1)
+    if a:0 >= 1 && <%=zl%>#var#is_dict(a:1)
         call extend(nrule, a:1)
     endif
 
@@ -77,7 +77,7 @@ function! zl#rule#norm(urule, ...)
     for type in ['bufname', 'cword']
         if has_key(a:urule, type)
             let type_pat[type] = '^\%('
-            \ . join(map(a:urule[type], 'zl#regex#escape(v:val)'), '\|')
+            \ . join(map(a:urule[type], '<%=zl%>#regex#escape(v:val)'), '\|')
             \ . '\)$'
         endif
     endfor
@@ -142,17 +142,17 @@ function! zl#rule#norm(urule, ...)
 endfunction
 
 
-function! zl#rule#is_true(nrule, ...)
+function! <%=zl%>#rule#is_true(nrule, ...)
     try
-        return call('zl#rule#logic_'.a:nrule['logic'], [a:nrule] + a:000)
+        return call('<%=zl%>#rule#logic_'.a:nrule['logic'], [a:nrule] + a:000)
     catch /^Vim\%((\a\+)\)\=:E129/
         throw 'zl(rule): undefined logic funcref'
     endtry
 endfunction
 
 
-function! zl#rule#is_false(nrule, ...)
-    return !call('zl#rule#is_true', [a:nrule] + a:000)
+function! <%=zl%>#rule#is_false(nrule, ...)
+    return !call('<%=zl%>#rule#is_true', [a:nrule] + a:000)
 endfunction
 
 
@@ -164,9 +164,9 @@ function! s:_return(nrule, type, ret)
     \ : a:ret
 endfunction
 
-function! zl#rule#logic_or(nrule, ...)
+function! <%=zl%>#rule#logic_or(nrule, ...)
     let opts = {}
-    if a:0 >= 1 && zl#var#is_dict(a:1)
+    if a:0 >= 1 && <%=zl%>#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -178,9 +178,9 @@ function! zl#rule#logic_or(nrule, ...)
     return 0
 endfunction
 
-function! zl#rule#logic_and(nrule, ...)
+function! <%=zl%>#rule#logic_and(nrule, ...)
     let opts = {}
-    if a:0 >= 1 && zl#var#is_dict(a:1)
+    if a:0 >= 1 && <%=zl%>#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -192,9 +192,9 @@ function! zl#rule#logic_and(nrule, ...)
     return 1
 endfunction
 
-function! zl#rule#logic_expr(nrule, ...)
+function! <%=zl%>#rule#logic_expr(nrule, ...)
     let opts = {}
-    if a:0 >= 1 && zl#var#is_dict(a:1)
+    if a:0 >= 1 && <%=zl%>#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
 
@@ -245,7 +245,7 @@ endfunction
 function! s:eval_mode(nrule, ...)
     let mode_pat  = get(a:nrule, 'mode', [])
     let mode_expr =
-    \ a:0 >= 1 && zl#var#is_dict(a:1)
+    \ a:0 >= 1 && <%=zl%>#var#is_dict(a:1)
     \ ? get(a:1, 'mode', mode())
     \ : mode()
 
@@ -262,10 +262,10 @@ function! s:eval_syntax(nrule, ...)
     let pat = get(a:nrule, 'syntax', '')
 
     let opts = {}
-    if a:0 >= 1 && zl#var#is_dict(a:1)
+    if a:0 >= 1 && <%=zl%>#var#is_dict(a:1)
         call extend(opts, a:1)
     endif
-    let syn_names = zl#syntax#synstack_names(opts)
+    let syn_names = <%=zl%>#syntax#synstack_names(opts)
 
     return !empty(filter(syn_names, 'match(v:val, pat) != -1'))
 endfunction
@@ -305,11 +305,11 @@ function! s:_eval_match(type, nrule, ...)
     endif
 
     " opt for {expr} from runtime opts
-    if a:0 >= 1 && zl#var#is_dict(a:1) && has_key(a:1, a:type)
+    if a:0 >= 1 && <%=zl%>#var#is_dict(a:1) && has_key(a:1, a:type)
         let rt_rule = a:1[a:type]
-        if zl#var#is_dict(rt_rule)
+        if <%=zl%>#var#is_dict(rt_rule)
             call extend(rule, rt_rule)
-        elseif zl#var#is_string(rt_rule)
+        elseif <%=zl%>#var#is_string(rt_rule)
             let rule['expr']      = rt_rule
             let rule['eval_expr'] = 0
         endif

@@ -25,7 +25,7 @@
 let s:os_type   = 'undefined'
 let s:is_cygwin = has('win32unix')
 
-function! zl#sys#ostype() "                                             [[[2
+function! <%=zl%>#sys#ostype() "                                             [[[2
     "--------- ------------------------------------------------
     " Args    :
     " Return  :
@@ -34,7 +34,7 @@ function! zl#sys#ostype() "                                             [[[2
     " Raise   :
     "
     " Example : >
-    "   call zl#rc#set_default('g:os_type', zl#sys#ostype())
+    "   call <%=zl%>#rc#set_default('g:os_type', <%=zl%>#sys#ostype())
     "--------- ------------------------------------------------
     if s:os_type != 'undefined'
         return s:os_type
@@ -61,17 +61,17 @@ function! zl#sys#ostype() "                                             [[[2
     return s:os_type
 endfunction
 
-function! zl#sys#is_cygwin()"                                           [[[2
+function! <%=zl%>#sys#is_cygwin()"                                           [[[2
     return s:is_cygwin
 endfunction
 
-function! zl#sys#is_win() "                                             [[[2
+function! <%=zl%>#sys#is_win() "                                             [[[2
     return s:os_type == 'Windows'
 endfunction
-function! zl#sys#is_mac() "                                             [[[2
+function! <%=zl%>#sys#is_mac() "                                             [[[2
     return s:os_type == 'Mac'
 endfunction
-function! zl#sys#is_linux() "                                           [[[2
+function! <%=zl%>#sys#is_linux() "                                           [[[2
     return s:os_type == 'Linux'
 endfunction
 

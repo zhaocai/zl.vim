@@ -19,24 +19,24 @@
 " Word Count:                                                             [[[1
 " ============================================================================
 
-function! zl#word#word_count() "                                          [[[2
+function! <%=zl%>#word#word_count() "                                          [[[2
 "----------------------%>----------------------
 " Word count of the current buffer
 "
 " Usage:
-"   set statusline+=%{zl#word#word_count()}
+"   set statusline+=%{<%=zl%>#word#word_count()}
 "----------------------%<----------------------
     if exists("b:Global_Word_Count") == 0
         let b:Global_Word_Count = 0
         let b:Current_Line_Word_Count = 0
         let b:Current_Line_Number = line(".")
-        call zl#word#other_line_word_count()
+        call <%=zl%>#word#other_line_word_count()
     endif
-    call zl#word#current_line_word_count()
+    call <%=zl%>#word#current_line_word_count()
     return b:Global_Word_Count + b:Current_Line_Word_Count
 endfunction
 
-function! zl#word#other_line_word_count() "                               [[[2
+function! <%=zl%>#word#other_line_word_count() "                               [[[2
 " returns the count of how many words are in the entire file excluding the
 " current line updates the buffer variable Global_Word_Count to reflect this
 
@@ -51,13 +51,13 @@ function! zl#word#other_line_word_count() "                               [[[2
     let count_words = 0
     let pattern = "\\<\\(\\w\\|-\\|'\\)\\+\\>"
     for str in data
-        let count_words = count_words + zl#word#num_patterns_in_string(str, pattern)
+        let count_words = count_words + <%=zl%>#word#num_patterns_in_string(str, pattern)
     endfor
     let b:Global_Word_Count = count_words
     return count_words
 endfunction
 
-function! zl#word#current_line_word_count() "                             [[[2
+function! <%=zl%>#word#current_line_word_count() "                             [[[2
 "returns the word count for the current line
 "updates the buffer variable Current_Line_Number
 "updates the buffer variable Current_Line_Word_Count
@@ -67,7 +67,7 @@ function! zl#word#current_line_word_count() "                             [[[2
     "calculate number of words on current line
     let line = getline(".")
     let pattern = "\\<\\(\\w\\|-\\|'\\)\\+\\>"
-    let count_words = zl#word#num_patterns_in_string(line, pattern)
+    let count_words = <%=zl%>#word#num_patterns_in_string(line, pattern)
     let b:Current_Line_Word_Count = count_words "update buffer variable with current line count
     if b:Current_Line_Number != line(".") "if the line number has changed then subtract current line count
         let b:Global_Word_Count = b:Global_Word_Count - b:Current_Line_Word_Count
@@ -77,7 +77,7 @@ function! zl#word#current_line_word_count() "                             [[[2
 endfunction
 
 
-function! zl#word#num_patterns_in_string(str, pat) "                      [[[2
+function! <%=zl%>#word#num_patterns_in_string(str, pat) "                      [[[2
 "returns the number of patterns found in a string
     let i = 0
     let num = -1
@@ -94,7 +94,7 @@ endfunction
 " Cursor Variable:                                                        [[[1
 " ============================================================================
 
-function! zl#word#cvar() "                                                [[[2
+function! <%=zl%>#word#cvar() "                                                [[[2
     " -------- - -----------------------------------------------
     "  Desc    : include the prefix like s:,g:,... into
     "            the <cword> expanstion
@@ -103,20 +103,20 @@ function! zl#word#cvar() "                                                [[[2
     "  Return  : current cursor varible name
     "  Raise   :
     "
-    "  Example : > echo zl#word#cvar()
+    "  Example : > echo <%=zl%>#word#cvar()
     "
     "  Refer   :
     " -------- - -----------------------------------------------
 
-	let l:saved_isk = zl#word#cvar_pre()
+	let l:saved_isk = <%=zl%>#word#cvar_pre()
 
 	let l:cword =  expand("<cword>")
 
-	call zl#word#cvar_post(l:saved_isk)
+	call <%=zl%>#word#cvar_post(l:saved_isk)
 	return l:cword
 endfunction
 
-function! zl#word#cvar_pre() "                                                  [[[2
+function! <%=zl%>#word#cvar_pre() "                                                  [[[2
 	let l:saved_isk = &l:iskeyword
 	if &ft == 'vim'
 		setlocal iskeyword+=:,#,.,_
@@ -133,7 +133,7 @@ function! zl#word#cvar_pre() "                                                  
 endfunction
 
 
-function! zl#word#cvar_post(saved_isk) "                                        [[[2
+function! <%=zl%>#word#cvar_post(saved_isk) "                                        [[[2
 	let &l:iskeyword = a:saved_isk
 endfunction
 
@@ -143,14 +143,14 @@ endfunction
 " ============================================================================
 " Current Word:                                                           [[[1
 " ============================================================================
-function! zl#word#current_keyword() "                                     [[[2
+function! <%=zl%>#word#current_keyword() "                                     [[[2
     let cur_text = matchstr(getline('.'), '^.*\%'
                 \ . (col('.')-1) . 'c.')
 
     return matchstr(cur_text, '\<\k*\>\s*$')
 endfunction
 
-function! zl#word#last_whitespace_col(...) "                              [[[2
+function! <%=zl%>#word#last_whitespace_col(...) "                              [[[2
 "---------------%>---------------
 "  opts = {
 "       \ 'base_line'  : line('.') ,
@@ -177,7 +177,7 @@ function! zl#word#last_whitespace_col(...) "                              [[[2
     return 1 " return the first column if not found
 endfunction
 
-function! zl#word#visual_selection()
+function! <%=zl%>#word#visual_selection()
     let a_save = @a
     try
         normal! gv"ay

@@ -16,7 +16,7 @@
 " ============================================================================
 " Status:                                                                 [[[1
 " ============================================================================
-function! zl#window#is_last_visible(...)
+function! <%=zl%>#window#is_last_visible(...)
     "--------- ------------------------------------------------
     " Desc    : check if no visible buffer left
     "
@@ -70,9 +70,9 @@ endfunction
 " Move:                                                                   [[[1
 " ============================================================================
 let s:golden_ratio = 1.618
-function! zl#window#next_window_or_tab()
+function! <%=zl%>#window#next_window_or_tab()
     if tabpagenr('$') == 1 && winnr('$') == 1
-        call zl#window#split_nicely()
+        call <%=zl%>#window#split_nicely()
     elseif winnr() < winnr("$")
         wincmd w
     else
@@ -81,7 +81,7 @@ function! zl#window#next_window_or_tab()
     endif
 endfunction
 
-function! zl#window#previous_window_or_tab()
+function! <%=zl%>#window#previous_window_or_tab()
     if winnr() > 1
         wincmd W
     else
@@ -95,11 +95,11 @@ endfunction
 " ============================================================================
 " Size:                                                                   [[[1
 " ============================================================================
-function! zl#window#golden_ratio_width()
+function! <%=zl%>#window#golden_ratio_width()
     return &columns / s:golden_ratio
 endfunction
 
-function! zl#window#golden_ratio_height()
+function! <%=zl%>#window#golden_ratio_height()
     return &lines / s:golden_ratio
 endfunction
 
@@ -108,7 +108,7 @@ endfunction
 " Split:                                                                  [[[1
 " ============================================================================
 
-function! zl#window#nicely_split_cmd(...)
+function! <%=zl%>#window#nicely_split_cmd(...)
     let opts = {
                 \ 'winnr' : 0 ,
             \}
@@ -130,18 +130,18 @@ function! zl#window#nicely_split_cmd(...)
     return 'split'
 endfunction
 
-function! zl#window#split_nicely()
-    exec zl#window#nicely_split_cmd()
+function! <%=zl%>#window#split_nicely()
+    exec <%=zl%>#window#nicely_split_cmd()
     wincmd p
 endfunction
 
-function! zl#window#toggle_split()
+function! <%=zl%>#window#toggle_split()
     let prev_name = winnr()
     silent! wincmd w
     if prev_name == winnr()
         split
     else
-        call zl#buf#quit()
+        call <%=zl%>#buf#quit()
     endif
 endfunction
 
@@ -150,7 +150,7 @@ endfunction
 " ============================================================================
 " Sort:                                                                   [[[1
 " ============================================================================
-function! zl#window#sort_by(...)
+function! <%=zl%>#window#sort_by(...)
     "--------- ------------------------------------------------
     " Desc    : sort buffer by size, height, or width
     "
@@ -203,7 +203,7 @@ function! zl#window#sort_by(...)
                 \ })
     endfor
 
-    return zl#list#sort_by(list,'v:val["'.opts['by'].'"]')
+    return <%=zl%>#list#sort_by(list,'v:val["'.opts['by'].'"]')
 endfunction
 
 
@@ -211,7 +211,7 @@ endfunction
 " Switch:                                                                 [[[1
 " ============================================================================
 
-function! zl#window#switch_buffer_toggle(...)
+function! <%=zl%>#window#switch_buffer_toggle(...)
     "--------- ------------------------------------------------
     " Desc    : toggle buffer switch
     "
@@ -226,7 +226,7 @@ function! zl#window#switch_buffer_toggle(...)
     "
     " Example : >
     "   nnoremap <silent> <C-@>
-    "   \ :<C-u>call zl#window#switch_buffer_toggle()<CR>
+    "   \ :<C-u>call <%=zl%>#window#switch_buffer_toggle()<CR>
     "--------- ------------------------------------------------
 
     let opts = {
@@ -239,10 +239,10 @@ function! zl#window#switch_buffer_toggle(...)
     let bufnr = bufnr('%')
     if exists('b:switch_buffer')
             \ && bufwinnr(b:switch_buffer['bufnr']) == b:switch_buffer['winnr']
-        call zl#window#switch_buffer(bufnr, b:switch_buffer['bufnr'])
+        call <%=zl%>#window#switch_buffer(bufnr, b:switch_buffer['bufnr'])
     else
         try
-            let fn = 'zl#window#switch_buffer_with_'.opts['with']
+            let fn = '<%=zl%>#window#switch_buffer_with_'.opts['with']
             exec 'call ' . fn . '()'
         catch /^Vim%((a+))=:E700/
             throw "zl: function " . fn . 'for ' . opts['with']
@@ -253,7 +253,7 @@ function! zl#window#switch_buffer_toggle(...)
 endfunction
 
 
-function! zl#window#switch_buffer_with_sorted_by_size_index(index, ...)
+function! <%=zl%>#window#switch_buffer_with_sorted_by_size_index(index, ...)
     "--------- ------------------------------------------------
     " Desc    : switch buffer with the largest window
     "
@@ -272,7 +272,7 @@ function! zl#window#switch_buffer_with_sorted_by_size_index(index, ...)
     "
     " Example : >
     "   nnoremap <silent> <C-@>
-    "   \ :<C-u>call zl#window#switch_buffer_with_largest()<CR>
+    "   \ :<C-u>call <%=zl%>#window#switch_buffer_with_largest()<CR>
     "--------- ------------------------------------------------
 
 
@@ -287,21 +287,21 @@ function! zl#window#switch_buffer_with_sorted_by_size_index(index, ...)
         call extend(opts, a:1)
     endif
 
-    let sorted = zl#window#sort_by(filter(copy(opts),'v:key != "bufnr"'))
+    let sorted = <%=zl%>#window#sort_by(filter(copy(opts),'v:key != "bufnr"'))
     let bufnr_to = sorted[a:index]['bufnr']
-    call zl#window#switch_buffer(opts['bufnr'], bufnr_to)
+    call <%=zl%>#window#switch_buffer(opts['bufnr'], bufnr_to)
 endfunction
 
 
-function! zl#window#switch_buffer_with_largest(...)
-    call zl#window#switch_buffer_with_sorted_by_size_index(-1, a:000)
+function! <%=zl%>#window#switch_buffer_with_largest(...)
+    call <%=zl%>#window#switch_buffer_with_sorted_by_size_index(-1, a:000)
 endfunction
 
-function! zl#window#switch_buffer_with_smallest(...)
-    call zl#window#switch_buffer_with_sorted_by_size_index(0, a:000)
+function! <%=zl%>#window#switch_buffer_with_smallest(...)
+    call <%=zl%>#window#switch_buffer_with_sorted_by_size_index(0, a:000)
 endfunction
 
-function! zl#window#switch_buffer(bufnr1, bufnr2)
+function! <%=zl%>#window#switch_buffer(bufnr1, bufnr2)
     "--------- ------------------------------------------------
     " Desc    : switch buffer window if both are visible
     "
@@ -342,7 +342,7 @@ function! zl#window#switch_buffer(bufnr1, bufnr2)
     endif
 endfunction
 
-function! zl#window#alternate_buffer()
+function! <%=zl%>#window#alternate_buffer()
     if bufnr('%') != bufnr('#') && buflisted(bufnr('#'))
         buffer #
     else
@@ -373,7 +373,7 @@ endfunction
 " Scroll:                                                                 [[[1
 " ============================================================================
 
-function! zl#window#scroll_other_window(direction)
+function! <%=zl%>#window#scroll_other_window(direction)
     execute 'wincmd' (winnr('#') == 0 ? 'w' : 'p')
     execute (a:direction ? "normal! \<C-d>" : "normal! \<C-u>")
     wincmd p
@@ -382,7 +382,7 @@ endfunction
 " ============================================================================
 " View:                                                                   [[[1
 " ============================================================================
-function! zl#window#save_view_command(command)
+function! <%=zl%>#window#save_view_command(command)
     let view = winsaveview()
     try
         keepjumps execute a:command

@@ -19,7 +19,7 @@
 " ============================================================================
 " Completion:                                                             [[[1
 " ============================================================================
-function! zl#file#ft_complete(arglead, cmdline, cursorpos) "              [[[2
+function! <%=zl%>#file#ft_complete(arglead, cmdline, cursorpos) "              [[[2
     let ret = {}
     for item in map(
     \   split(globpath(&runtimepath, 'syntax/*.vim'), '\n'),
@@ -37,16 +37,16 @@ endfunction
 " Open:                                                                   [[[1
 " ============================================================================
 
-function! zl#file#open(filename) "                                        [[[2
+function! <%=zl%>#file#open(filename) "                                        [[[2
 " Open a file/url
     let filename = iconv(fnamemodify(a:filename, ':p'),
                 \ &encoding, &termencoding)
 
     " Detect desktop environment.
-    if zl#sys#is_win()
+    if <%=zl%>#sys#is_win()
         " For URI only.
         silent execute '!start rundll32 url.dll,FileProtocolHandler' filename
-    elseif zl#sys#is_cygwin()
+    elseif <%=zl%>#sys#is_cygwin()
         " Cygwin.
         call system(printf('%s ''%s''', 'cygstart', filename))
     elseif executable('xdg-open')
@@ -61,7 +61,7 @@ function! zl#file#open(filename) "                                        [[[2
     elseif executable('exo-open')
         " Xfce.
         call system(printf('%s ''%s'' &', 'exo-open', filename))
-    elseif zl#sys#is_mac() && executable('open')
+    elseif <%=zl%>#sys#is_mac() && executable('open')
         " Mac OS.
         call system(printf('%s ''%s'' &', 'open', filename))
     else

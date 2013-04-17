@@ -43,36 +43,36 @@ let [
 " This doesn't match to anything.
 
 " Number or Float
-function! zl#var#is_numeric(Value)
+function! <%=zl%>#var#is_numeric(Value)
   let _ = type(a:Value)
   return _ ==# s:__TYPE_NUMBER
   \   || _ ==# s:__TYPE_FLOAT
 endfunction
 " Number
-function! zl#var#is_integer(Value)
+function! <%=zl%>#var#is_integer(Value)
   return type(a:Value) ==# s:__TYPE_NUMBER
 endfunction
-function! zl#var#is_number(Value)
+function! <%=zl%>#var#is_number(Value)
   return type(a:Value) ==# s:__TYPE_NUMBER
 endfunction
 " Float
-function! zl#var#is_float(Value)
+function! <%=zl%>#var#is_float(Value)
   return type(a:Value) ==# s:__TYPE_FLOAT
 endfunction
 " String
-function! zl#var#is_string(Value)
+function! <%=zl%>#var#is_string(Value)
   return type(a:Value) ==# s:__TYPE_STRING
 endfunction
 " Funcref
-function! zl#var#is_funcref(Value)
+function! <%=zl%>#var#is_funcref(Value)
   return type(a:Value) ==# s:__TYPE_FUNCREF
 endfunction
 " List
-function! zl#var#is_list(Value)
+function! <%=zl%>#var#is_list(Value)
   return type(a:Value) ==# s:__TYPE_LIST
 endfunction
 " Dictionary
-function! zl#var#is_dict(Value)
+function! <%=zl%>#var#is_dict(Value)
   return type(a:Value) ==# s:__TYPE_DICT
 endfunction
 

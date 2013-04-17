@@ -42,11 +42,11 @@ function! s:ftdetect(filename)
     endfor
 
     " vim filetype detect
-    if !exists('b:zl_ftdetect_buf')
-        let b:zl_saved_lazyredraw = &lazyredraw
+    if !exists('b:<%=zu%>_ftdetect_buf')
+        let b:<%=zu%>_saved_lazyredraw = &lazyredraw
         set lazyredraw
         vsplit | enew
-        let b:zl_ftdetect_buf = bufnr('%')
+        let b:<%=zu%>_ftdetect_buf = bufnr('%')
     endif
     try
         silent exec 'noautocmd file ' . escape(a:filename, ' ')
@@ -62,7 +62,7 @@ function! s:ftdetect(filename)
     endtry
 endfunction
 
-function! zl#ft#detect(filename) "                                      [[[2
+function! <%=zl%>#ft#detect(filename) "                                      [[[2
     "--------- ------------------------------------------------
     " Desc    : Detect Filetype
     "
@@ -71,9 +71,9 @@ function! zl#ft#detect(filename) "                                      [[[2
     " Raise   : 'zl: unsupported type'
     "
     " Example : >
-    "   echo zl#ft#detect('.ssh/config')
-    "   echo zl#ft#detect(['a.vim', '.ssh/config'])
-    "   echo zl#ft#detect({'a.vim':'', '.ssh/config':''})
+    "   echo <%=zl%>#ft#detect('.ssh/config')
+    "   echo <%=zl%>#ft#detect(['a.vim', '.ssh/config'])
+    "   echo <%=zl%>#ft#detect({'a.vim':'', '.ssh/config':''})
     "--------- ------------------------------------------------
     try
         if type(a:filename) == type('')
@@ -86,10 +86,10 @@ function! zl#ft#detect(filename) "                                      [[[2
             throw 'zl: unsupported type ' . string(type(a:filename))
         endif
     finally
-        if exists('b:zl_ftdetect_buf')
+        if exists('b:<%=zu%>_ftdetect_buf')
             bwipeout!
             redraw
-            let &lazyredraw = b:zl_saved_lazyredraw
+            let &lazyredraw = b:<%=zu%>_saved_lazyredraw
         endif
 
     endtry

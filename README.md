@@ -16,6 +16,44 @@ created.
 1. find project root with confidence
 1. optimized foldtext
 
+
+## Example Usage:
+
+```vim
+    NeoBundle 'zhaocai/zl.vim'
+
+    call zl#rc#init()
+    let g:os_type = zl#sys#ostype()
+
+    " Reload Script:
+    " --------------
+    autocmd FileType vim call <SID>my_vim_settings()
+    function! s:my_vim_settings()
+        command! -buffer -nargs=0 ZreloadScript  call zl#rc#script_force_reload()
+        nnoremap <buffer> <leader>rs :<C-u>ZreloadScript<CR>
+        command! -buffer ZautoReloadScript autocmd BufWritePost <buffer> call zl#rc#script_force_reload()
+    endfunction
+
+    " Cword Highlight:
+    " ----------------
+    command! -nargs=0 ZhlCwordToggle call zl#syntax#hl_cword_toggle()
+
+    " Auto Highlight Cursor Word
+    " let g:zl_hl_cword_syngroup = 'SpellCap'
+    nnoremap <silent> <C-h>h :<C-u>call zl#syntax#hl_cword_toggle()<CR>
+
+    " Syntax Highlight Info:
+    " ----------------------
+    "Show cword syntax group and color info
+    nnoremap [get]a :call zl#syntax#cursor_hl_echo()<CR>
+    nnoremap <silent> [do]ca :call setreg('*', zl#syntax#cursor_hlgroup())<CR>
+
+```
+
+## Erb Escaping
+
+1. `#syntax#range_syntax_ignore` line 6
+
 ## License
 
 Copyright (c) 2012 Zhao Cai <caizhaoff@gmail.com>

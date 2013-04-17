@@ -20,7 +20,7 @@
 " ============================================================================
 " Complete Words:                                                         [[[1
 " ============================================================================
-function! zl#complete#get_prev_cur(cmdline) "                             [[[2
+function! <%=zl%>#complete#get_prev_cur(cmdline) "                             [[[2
     "--------- ----------------------------------------------------
     " Desc    : previous and current word for input() completion
     "
@@ -30,7 +30,7 @@ function! zl#complete#get_prev_cur(cmdline) "                             [[[2
     "
     " Example : >
     "   fun! xxx#completion(arglead, cmdline, cursorpos)
-    "       let [prev, cur] = zl#complete#get_prev_cur(a:arglead)
+    "       let [prev, cur] = <%=zl%>#complete#get_prev_cur(a:arglead)
     "       return map(filter(xxxwordslist,
     "              \ 'cur == "" ? 1 : stridx(v:val, cur) == 0' ),
     "              \ 'prev == "" ? v:val : join([prev, v:val])')
